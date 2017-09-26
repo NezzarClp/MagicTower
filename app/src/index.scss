@@ -1,5 +1,7 @@
 @import "./stylesheets/grid.scss";
+$cellWidth: 60px;
 
 .hi {
-  font-size: 60px;
+  height: $cellWidth;
+  width: $cellWidth;
 }
