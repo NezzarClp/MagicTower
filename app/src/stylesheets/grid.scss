@@ -1,0 +1,8 @@
+$cellWidth: 60px;
+
+.grid__cell {
+    &__img {
+        width: $cellWidth;
+        height: $cellWidth;
+    }
+}
