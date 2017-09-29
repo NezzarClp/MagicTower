@@ -1,0 +1,17 @@
+Objective done: added x and y coordinate support for grid cell.
+
+I choose to use absolute positioning for the cells. Seems it will be easier to handle overlapping images later then the approach of dividing grid to rows
+
+Discussion: should I move everything belong to a cell to GridCell or should I create classes like MonsterCell, TileCell to handle the rendering of monsters and tiles?
+Seems the former approach will allow easier control for cells. Properly go for that.
+
+TODO:
+  High priority
+    Implement maze reducer to store the config of the maze
+    Read maze from .json instead of hardcoding
+    Implement the character position
+
+  Medium priority
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Make the outer of character image transparent

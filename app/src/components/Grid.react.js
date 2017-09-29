@@ -6,8 +6,10 @@ export default class Grid extends React.Component {
     render() {
         return (
             <div>
-            <GridCell />
-            <GridCell />
+            <GridCell x={0} y={0} cellType={'wall'}/>
+            <GridCell x={1} y={0} cellType={'wall'}/>
+            <GridCell x={0} y={1} cellType={'wall'}/>
+            <GridCell x={1} y={1} cellType={'floor'}/>
             </div>
         );
     }
