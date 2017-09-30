@@ -5,9 +5,10 @@ import { createStore } from 'redux'
 
 import './index.css';
 import App from './App';
+import reducers from './reducers'
 import registerServiceWorker from './registerServiceWorker';
 
-let store = createStore(function() {});
+const store = createStore(reducers);
 
 render(
   <Provider store={store}>

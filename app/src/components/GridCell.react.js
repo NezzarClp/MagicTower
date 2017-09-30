@@ -22,6 +22,11 @@ export default class GridCell extends React.Component {
          * The type of the tile of the cell
          */
         cellType: PropTypes.string,
+        
+        /**
+         * True if the cell has the character on
+         */
+        character: PropTypes.bool,
     };
 
     _getPositionStyle() {
@@ -32,6 +37,17 @@ export default class GridCell extends React.Component {
             position: 'absolute',
             top: `${y*width}px`,
             left: `${x*width}px`,
+        };
+    }
+    
+    _getCharacterStyle() {
+        return {
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '30px',
+            height: '30px',
+            'z-index': 1,
         };
     }
 
@@ -47,11 +63,24 @@ export default class GridCell extends React.Component {
         }
     }
     render() {
+        const { character } = this.props;
         const positionStyle = this._getPositionStyle();
+        let characterImg;
+        
+        if (character) {
+            const characterStyle = this._getCharacterStyle();
+            characterImg = (<img 
+                className='grid__cell__img' 
+                alt='' 
+                style={characterStyle} 
+                src={floor} 
+            />)
+        }
 
         return (
             <div className='grid__cell' style={positionStyle}>
                 <img className='grid__cell__img' alt='' src={this._getBackGroundTileSrc()} />
+                {characterImg}
             </div>
         );
     }

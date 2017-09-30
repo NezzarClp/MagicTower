@@ -1,0 +1,16 @@
+Objective done: made grid hard-coded from reducer instead of component. Also tried to add a overlapping character image on top of one of the grid.
+
+Perhaps good time to add monsters, and we should support moving character around? Should be a good time to add some actions
+
+TODO:
+  High priority
+    Fix the position of character image
+    Read maze from .json instead of hardcoding
+    Create buttons to move character around
+    Create monsters in grid
+
+  Medium priority
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Make the outer of character image transparent
