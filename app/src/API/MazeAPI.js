@@ -18,23 +18,35 @@ export default {
                 mapTilesIDToString
             } = mazeConfig;
             const numRows = mazeTiles.length;
-            const returnTiles = [];
+            const tilesDetails = [];
+
+            const height = numRows;
+            let width = 0;
 
             for (let i = 0; i < numRows; i++) {
                 const mazeTileRow = mazeTiles[i];
                 const numTiles = mazeTileRow.length;
+                const mazeTilesRowDetails = [];
+
+                if (numTiles > width) {
+                    width = numTiles;
+                }
 
                 for (let j = 0; j < numTiles; j++) {
                     const mazeTileType = mazeTileRow[j];
-                    returnTiles.push({
+                    mazeTilesRowDetails.push({
                         type: mapTilesIDToString[mazeTileType],
-                        x: i,
-                        y: j,
                     });
                 }
+
+                tilesDetails.push(mazeTilesRowDetails);
             }
 
-            resolve(returnTiles);
+            resolve({
+                height,
+                width,
+                tilesDetails,
+            });
         });
     }
 

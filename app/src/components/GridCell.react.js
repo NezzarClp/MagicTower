@@ -1,11 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+
 import wall from '../images/wall.png';
 // TODO replace floor.png with real floor
 import floor from '../images/floor.png';
 
-export default class GridCell extends React.Component {
+function mapStateToProps(state, ownProps) {
+    const { x, y } = ownProps;
+
+    return {
+        cellType: state.maze.tilesDetails[x][y].type,
+    }
+}
+
+export class GridCell extends React.Component {
 
     static propTypes = {
         /**
@@ -68,3 +78,5 @@ export default class GridCell extends React.Component {
         );
     }
 }
+
+export default connect(mapStateToProps)(GridCell);

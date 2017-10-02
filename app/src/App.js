@@ -12,8 +12,8 @@ import Grid from './components/Grid.react';
 
 function mapDispatchToProps(dispatch) {
     return {
-        initialzeMapTiles: (mazeTiles) => {
-            dispatch(MazeActions.initialzeMapTiles(mazeTiles));
+        initialzeMapTiles: (mazeTileDetails) => {
+            dispatch(MazeActions.initialzeMapTiles(mazeTileDetails));
         }
     }
 }
@@ -31,8 +31,8 @@ export class App extends React.Component {
     _initializeApp() {
         const { initialzeMapTiles } = this.props;
         MazeAPI.readMazeTiles()
-            .then((mazeTiles) => {
-                initialzeMapTiles(mazeTiles);
+            .then((mazeTileDetails) => {
+                initialzeMapTiles(mazeTileDetails);
             });
     }
 
@@ -43,10 +43,7 @@ export class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <Grid
-                    numRows={4}
-                    numColumns={4}
-                />
+                <Grid />
                 <ControlPanel />
             </div>
         );
