@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-import wall from '../images/wall.png';
-// TODO replace floor.png with real floor
-import floor from '../images/floor.png';
+// TODO replace floor.png with character
+import character from '../images/floor.png';
 
-export default class GridCell extends React.Component {
+export default class CharacterCell extends React.Component {
 
     static propTypes = {
         /**
@@ -17,11 +16,6 @@ export default class GridCell extends React.Component {
          * The 0-based y-coordinate of the cell, from top to bottom
          */
         y: PropTypes.number.isRequired,
-
-        /**
-         * The type of the tile of the cell
-         */
-        cellType: PropTypes.string,
     };
 
     _getPositionStyle() {
@@ -37,33 +31,30 @@ export default class GridCell extends React.Component {
 
     _getCharacterStyle() {
         return {
-            position: 'absolute',
-            top: '0',
-            left: '0',
+            top: 0,
+            left: 0,
             width: '30px',
             height: '30px',
             'z-index': 1,
         };
     }
 
-    _getBackGroundTileSrc() {
-        const { cellType } = this.props;
-        switch (cellType) {
-            case 'wall':
-                return wall;
-            case 'floor':
-                return floor;
-            default:
-                return wall;
-        }
+    _getCharacterSrc() {
+        return character;
     }
 
     render() {
         const positionStyle = this._getPositionStyle();
+        const characterStyle = this._getCharacterStyle();
 
         return (
             <div className='grid__cell' style={positionStyle}>
-                <img className='grid__cell__img' alt='' src={this._getBackGroundTileSrc()} />
+                <img
+                    alt=''
+                    className='grid__cell__img'
+                    style={characterStyle}
+                    src={this._getCharacterSrc()}
+                />
             </div>
         );
     }

@@ -1,0 +1,25 @@
+Objective done: Added a button to move the `character` around. (Currently only left)
+Done by refactoring part of the character cell implementation
+
+Maybe we should flatten the structure of the state in maze reducer.
+Ideally we should provide a list for Grid for the available cells,
+then create cell containers to read the specific state of cell.
+This way, when a cell changes content we don't need call render in Grid.react.js and re-render every cell.
+
+Probably good time to implement a detailed control panel.
+Also we need to implement the checking of movement, preventing character from moving out of the field / walls
+
+TODO:
+  High priority
+    Implement movement checking in reducer
+    Flatten the state content in maze reducer
+    Fix the position of character image
+    Read maze from .json instead of hardcoding
+    Create monsters in grid
+
+  Medium priority
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Make the outer of character image transparent
