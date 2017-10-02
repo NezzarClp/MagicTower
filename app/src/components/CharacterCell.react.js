@@ -35,7 +35,7 @@ export default class CharacterCell extends React.Component {
             left: 0,
             width: '30px',
             height: '30px',
-            'z-index': 1,
+            'zIndex': 1,
         };
     }
 

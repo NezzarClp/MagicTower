@@ -1,0 +1,17 @@
+Objective done: Read maze from .json instead of hardcoding
+
+A short commit to read maze from .json. As the size of the maze keeps increasing (and we need a large maze to test).
+
+TODO:
+  High priority
+    Implement movement checking in reducer
+    Flatten the state content in maze reducer
+    Fix the position of character image
+    Create monsters in grid
+
+  Medium priority
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Make the outer of character image transparent

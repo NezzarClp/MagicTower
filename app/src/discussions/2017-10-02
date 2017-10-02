@@ -11,7 +11,7 @@ Also we need to implement the checking of movement, preventing character from mo
 
 TODO:
   High priority
-    Implement movement checking in reducer
+    Implement movement checking in reducer 
     Flatten the state content in maze reducer
     Fix the position of character image
     Read maze from .json instead of hardcoding

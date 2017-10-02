@@ -1,32 +1,5 @@
 const initialState = {
-    // TODO remove hard-coded grid
-    grid: [
-        {
-            type: 'wall',
-            x: 0,
-            y: 0,
-        },
-        {
-            type: 'wall',
-            x: 0,
-            y: 1,
-        },
-        {
-            type: 'wall',
-            x: 1,
-            y: 0,
-        },
-        {
-            type: 'floor',
-            x: 1,
-            y: 1,
-        },
-        {
-            type: 'floor',
-            x: 3,
-            y: 3,
-        },
-    ],
+    grid: [],
 
     character: {
         x: 3,
@@ -36,6 +9,14 @@ const initialState = {
 
 const maze = (state = initialState, action) => {
     switch (action.type) {
+        case 'INITIALIZE_MAP_TILES': {
+            const { mapTiles } = action.payload;
+
+            return {
+                ...state,
+                grid: mapTiles,
+            };
+        }
         case 'MOVE_CHARACTER': {
             const { differenceX, differenceY } = action.payload;
             const { character } = state;

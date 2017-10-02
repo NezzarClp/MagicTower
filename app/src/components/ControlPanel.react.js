@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 function mapDispatchToProps(dispatch) {
     return {
         onMoveLeftClick: () => {
-            dispatch(MazeActions.MovetoLeft());
+            dispatch(MazeActions.movetoLeft());
         }
     }
 }
@@ -16,7 +16,7 @@ function mapDispatchToProps(dispatch) {
 export class ControlPanel extends React.Component {
 
     static propTypes = {
-        onMoveLeftClick: PropTypes.function,
+        onMoveLeftClick: PropTypes.func,
     };
 
     render() {
@@ -24,7 +24,7 @@ export class ControlPanel extends React.Component {
 
         return (
             <button
-                style={{'background-color': 'yellow'}}
+                style={{'backgroundColor': 'yellow'}}
                 onClick={onMoveLeftClick}
             />
         );
