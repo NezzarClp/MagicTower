@@ -42,7 +42,10 @@ export class App extends React.Component {
 
     render() {
         return (
-            <div className="App">
+            <div className="App" style={{
+                display: 'flex',
+                margin: '8px',
+            }}>
                 <Grid
                     numRows={4}
                     numColumns={4}
