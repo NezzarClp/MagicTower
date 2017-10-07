@@ -42,8 +42,11 @@ export class App extends React.Component {
 
     render() {
         return (
-            <div className="App">
-                <Grid />
+            <div className="App" style={{
+                display: 'flex',
+                margin: '8px',
+            }}>
+                <Grid />          
                 <ControlPanel />
             </div>
         );

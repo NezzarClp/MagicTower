@@ -17,12 +17,12 @@ export default {
         }
     },
 
-    movetoLeft() {
+    moveCharacter(differenceX, differenceY) {
         return {
             type: 'MOVE_CHARACTER',
             payload: {
-                differenceX: -1,
-                differenceY: 0,
+                differenceX,
+                differenceY,
             },
         };
     }

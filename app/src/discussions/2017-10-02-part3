@@ -1,0 +1,17 @@
+Objective done: Created 3 more buttons to move character to each of the 4 cardinal directions
+
+Seems flex-box is a powerful tool to position divs in css.
+
+TODO:
+  High priority
+    Implement movement checking in reducer
+    Flatten the state content in maze reducer
+    Fix the position of character image
+    Create monsters in grid
+
+  Medium priority
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Make the outer of character image transparent

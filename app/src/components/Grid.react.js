@@ -75,6 +75,8 @@ export class Grid extends React.Component {
         return {
             height: `${numRows * cellWidth}px`,
             width: `${numColumns * cellWidth}px`,
+            position: 'relative',
+            display: 'flex',
         };
     }
 
