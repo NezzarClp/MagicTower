@@ -1,0 +1,19 @@
+Objective done: Implemented initial movement checking for character.
+
+I accepted the pull request by me, but seems it's risky to do the conflict checking on the website.
+Perhaps I should commit a merge before that.
+Also I should create a branch for UI designs, currently a lot of images are labelled '?'.
+
+TODO:
+  High priority
+    Create SVG buttons for control panel
+    Flatten the state content in maze reducer
+    Fix the position of character image
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Create monsters in grid
+
+  Medium priority
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Enlarge the grid
