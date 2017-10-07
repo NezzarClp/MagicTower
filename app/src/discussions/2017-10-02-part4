@@ -1,0 +1,20 @@
+Objective done: Refactor grid cell logic so that each grid cell listen to the state of itself only
+and the grid knows nothing about the details of the grid cells.
+
+Preparation to movement checking in reducer, should be done by tomorrow
+
+Possibly a chance for me to learn branching and merging in git.
+
+TODO:
+  High priority
+    Implement movement checking in reducer
+    Flatten the state content in maze reducer
+    Fix the position of character image
+    Create monsters in grid
+
+  Medium priority
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Make the outer of character image transparent

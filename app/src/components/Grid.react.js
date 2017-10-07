@@ -8,7 +8,8 @@ import GridCell from './GridCell.react';
 
 function mapStateToProps(state) {
     return {
-        cells: state.maze.grid,
+        numRows: state.maze.gridHeight,
+        numColumns: state.maze.gridWidth,
         character: state.maze.character,
     };
 }
@@ -27,38 +28,29 @@ export class Grid extends React.Component {
         numColumns: PropTypes.number,
 
         /**
-         * Grid cells in the grid
-         */
-        cells: PropTypes.arrayOf(PropTypes.object),
-
-        /**
          * Character object in the grid
          */
         characters: PropTypes.object,
     };
 
     _getGridCells() {
-        const { cells } = this.props;
+        const {
+            numRows,
+            numColumns,
+        } = this.props;
         const gridCells = [];
-        const numCells = cells.length;
 
-        for (let i = 0; i < numCells; i++) {
-            const cell = cells[i];
-            const {
-                x,
-                y,
-                type,
-            } = cell;
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numColumns; j++) {
+                const gridCell = (
+                    <GridCell
+                        x={i}
+                        y={j}
+                    />
+                );
 
-            const gridCell = (
-                <GridCell
-                    x={x}
-                    y={y}
-                    cellType={type}
-                />
-            );
-
-            gridCells.push(gridCell);
+                gridCells.push(gridCell);
+            }
         }
 
         return gridCells;

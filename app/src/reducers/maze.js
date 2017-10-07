@@ -1,20 +1,29 @@
 const initialState = {
-    grid: [],
+    height: 0,
+    width: 0,
+    tilesDetails: [],
 
     character: {
         x: 3,
         y: 1,
     },
-};
+}
 
 const maze = (state = initialState, action) => {
     switch (action.type) {
         case 'INITIALIZE_MAP_TILES': {
-            const { mapTiles } = action.payload;
+            const { mapTileDetails } = action.payload;
+            const {
+                height,
+                width,
+                tilesDetails
+            } = mapTileDetails;
 
             return {
                 ...state,
-                grid: mapTiles,
+                gridHeight: height,
+                gridWidth: width,
+                tilesDetails,
             };
         }
         case 'MOVE_CHARACTER': {
