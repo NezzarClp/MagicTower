@@ -7,8 +7,8 @@ import MazeActions from './actions/MazeActions';
 
 import MazeAPI from './API/MazeAPI';
 
-import ControlPanel from './components/ControlPanel.react';
 import Grid from './components/Grid.react';
+import Panel from './components/Panel.react';
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -46,8 +46,8 @@ export class App extends React.Component {
                 display: 'flex',
                 margin: '8px',
             }}>
-                <Grid />          
-                <ControlPanel />
+                <Grid />
+                <Panel />
             </div>
         );
     }

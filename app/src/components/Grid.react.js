@@ -46,6 +46,7 @@ export class Grid extends React.Component {
                     <GridCell
                         x={i}
                         y={j}
+                        key={`${i}${j}`}
                     />
                 );
 

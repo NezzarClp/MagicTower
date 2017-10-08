@@ -29,17 +29,17 @@ export class ControlPanel extends React.Component {
          * Fired when left button is clicked
          */
         onMoveLeftClick: PropTypes.func,
-        
+
         /**
          * Fired when top button is clicked
          */
         onMoveUpClick: PropTypes.func,
-        
+
         /**
          * Fired when right button is clicked
          */
         onMoveRightClick: PropTypes.func,
-        
+
         /**
          * Fired when left button is clicked
          */
@@ -47,7 +47,7 @@ export class ControlPanel extends React.Component {
     };
 
     render() {
-        const { 
+        const {
             onMoveLeftClick,
             onMoveUpClick,
             onMoveRightClick,
@@ -55,7 +55,7 @@ export class ControlPanel extends React.Component {
         } = this.props;
 
         return (
-            <div style={{display: 'inline-block'}}>
+            <div className="panel--control">
                 <button
                     style={{'backgroundColor': 'yellow'}}
                     onClick={onMoveLeftClick}
