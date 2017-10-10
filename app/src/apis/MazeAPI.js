@@ -41,7 +41,7 @@ export default {
 
                 tilesDetails.push(mazeTilesRowDetails);
             }
-
+    
             resolve({
                 height,
                 width,

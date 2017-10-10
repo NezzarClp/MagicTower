@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import CharacterCell from './CharacterCell.react';
-import GridCell from './GridCell.react';
+import CharacterCell from './cells/CharacterCell.react';
+import GridCell from './cells/GridCell.react';
+import MonsterCell from './cells/MonsterCell.react';
 
 function mapStateToProps(state) {
     return {
         numRows: state.maze.gridHeight,
         numColumns: state.maze.gridWidth,
         character: state.maze.character,
+        monstersCoordinates: state.maze.monsters,
     };
 }
 
@@ -31,6 +33,11 @@ export class Grid extends React.Component {
          * Character object in the grid
          */
         characters: PropTypes.object,
+        
+        /**
+         * Coordinates of monsters in the grid
+         */
+        monstersCoordinates: PropTypes.arrayOf(PropTypes.object),
     };
 
     _getGridCells() {
@@ -38,14 +45,16 @@ export class Grid extends React.Component {
             numRows,
             numColumns,
         } = this.props;
+        
         const gridCells = [];
 
         for (let i = 0; i < numRows; i++) {
             for (let j = 0; j < numColumns; j++) {
                 const gridCell = (
                     <GridCell
-                        x={i}
-                        y={j}
+                        key={`gridCell${i}_${j}`}
+                        row={i}
+                        column={j}
                     />
                 );
 
@@ -58,14 +67,35 @@ export class Grid extends React.Component {
 
     _getCharacterCells() {
         const { character } = this.props;
-        const { x, y } = character;
+        const { row, column } = character;
 
         return (
             <CharacterCell
-                x={x}
-                y={y}
+                row={row}
+                column={column}
             />
         )
+    }
+
+    _getMonsterCells() {
+        const { monstersCoordinates } = this.props;
+        const monsterCells = [];
+        const numMonstersCoordinates = monstersCoordinates.length;
+        
+        for (let i = 0; i < numMonstersCoordinates; i++) {
+            const { row, column } = monstersCoordinates[i];
+            const monsterCell = (
+                <MonsterCell 
+                    key={`monsterCell${row}_${column}`}
+                    row={row}
+                    column={column}
+                />
+            );
+            
+            monsterCells.push(monsterCell);
+        }
+        
+        return monsterCells;
     }
 
     _getGridStyle() {
@@ -83,12 +113,14 @@ export class Grid extends React.Component {
     render() {
         const gridCells = this._getGridCells();
         const characterCells = this._getCharacterCells();
+        const monsterCells = this._getMonsterCells();
         const gridStyle = this._getGridStyle();
 
         return (
             <div style={gridStyle}>
                 {gridCells}
                 {characterCells}
+                {monsterCells}
             </div>
         );
     }

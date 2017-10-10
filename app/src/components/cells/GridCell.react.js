@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import wall from '../images/wall.png';
+import wall from '../../images/wall.png';
 // TODO replace floor.png with real floor
-import floor from '../images/floor.png';
+import floor from '../../images/floor.png';
 
 function mapStateToProps(state, ownProps) {
-    const { x, y } = ownProps;
+    const { row, column } = ownProps;
 
     return {
-        cellType: state.maze.tilesDetails[x][y].type,
+        cellType: state.maze.tilesDetails[row][column].type,
     }
 }
 
@@ -21,12 +21,12 @@ export class GridCell extends React.Component {
         /**
          * The 0-based x-coordinate of the cell, from left to right
          */
-        x: PropTypes.number.isRequired,
+        column: PropTypes.number.isRequired,
 
         /**
          * The 0-based y-coordinate of the cell, from top to bottom
          */
-        y: PropTypes.number.isRequired,
+        row: PropTypes.number.isRequired,
 
         /**
          * The type of the tile of the cell
@@ -35,13 +35,13 @@ export class GridCell extends React.Component {
     };
 
     _getPositionStyle() {
-        const { x, y } = this.props;
-        const width = 60;
+        const { row, column } = this.props;
+        const cellWidth = 60;
 
         return {
             position: 'absolute',
-            top: `${y*width}px`,
-            left: `${x*width}px`,
+            top: `${row*cellWidth}px`,
+            left: `${column*cellWidth}px`,
         };
     }
 
