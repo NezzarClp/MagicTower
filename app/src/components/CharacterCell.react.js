@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-// TODO replace floor.png with character
-import character from '../images/floor.png';
+// TODO capture character image
+import character from '../images/character.png';
 
 export default class CharacterCell extends React.Component {
 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import MazeActions from './actions/MazeActions';
 
-import MazeAPI from './API/MazeAPI';
+import MazeAPI from './apis/MazeAPI';
 
 import ControlPanel from './components/ControlPanel.react';
 import Grid from './components/Grid.react';
