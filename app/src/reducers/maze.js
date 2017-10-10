@@ -33,7 +33,6 @@ function canCharacterEnterCell(cellType) {
  * @return {boolean}  True if the character can enter the new Position
  */
 function checkValidPosition(maze, height, width, newPosition) {
-    console.log(newPosition);
     const {
         newRow: row,
         newColumn: column,
