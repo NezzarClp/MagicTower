@@ -1,5 +1,5 @@
-Objective done: Implemented collision check for character and monsters.
-Need time to think how should we simulate the fight. Now provides log only.
+Preparing work of battle mechanic to add monsters on grid. Added monster cell.
+Renamed the props in cells, `rows` and `columns` bring far less ambiguity than `x` and `y`. Probably should use better naming from now on.
 
 TODO:
   High priority

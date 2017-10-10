@@ -12,8 +12,8 @@ import Grid from './components/Grid.react';
 
 function mapDispatchToProps(dispatch) {
     return {
-        initialzeMapTiles: (mazeTileDetails) => {
-            dispatch(MazeActions.initialzeMapTiles(mazeTileDetails));
+        initialzeMap: (mazeDetails) => {
+            dispatch(MazeActions.initialzeMap(mazeDetails));
         }
     }
 }
@@ -25,14 +25,14 @@ export class App extends React.Component {
         /**
          * Function to be called when map tiles are ready
          */
-        initialzeMapTiles: PropTypes.func,
+        initialzeMap: PropTypes.func,
     }
 
     _initializeApp() {
-        const { initialzeMapTiles } = this.props;
+        const { initialzeMap } = this.props;
         MazeAPI.readMazeTiles()
-            .then((mazeTileDetails) => {
-                initialzeMapTiles(mazeTileDetails);
+            .then((mazeDetails) => {
+                initialzeMap(mazeDetails);
             });
     }
 

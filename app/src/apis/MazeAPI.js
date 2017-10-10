@@ -15,9 +15,11 @@ export default {
         return new Promise((resolve, reject) => {
             const {
                 mazeTiles,
-                mapTilesIDToString
+                mapTilesIDToString,
+                monsters,
             } = mazeConfig;
             const numRows = mazeTiles.length;
+            const monstersDetails = [];
             const tilesDetails = [];
 
             const height = numRows;
@@ -35,16 +37,28 @@ export default {
                 for (let j = 0; j < numTiles; j++) {
                     const mazeTileType = mazeTileRow[j];
                     mazeTilesRowDetails.push({
+                        monsterID: null,
                         type: mapTilesIDToString[mazeTileType],
                     });
                 }
 
                 tilesDetails.push(mazeTilesRowDetails);
             }
+            
+            const numMonsters = monsters.length;
+            
+            for (let i = 0; i < numMonsters; i++) {
+                const monster = monsters[i];
+                const { row, column } = monster;
+                
+                monstersDetails.push(monster);
+                tilesDetails[row][column].monsterID = i;
+            }
     
             resolve({
                 height,
                 width,
+                monstersDetails,
                 tilesDetails,
             });
         });

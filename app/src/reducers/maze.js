@@ -1,16 +1,16 @@
 const initialState = {
     gridHeght: 0,
     gridWidth: 0,
+    monstersDetails: [],
     tilesDetails: [],
 
     character: {
         row: 3,
         column: 1,
+        attack: 25,
+        defend: 5,
+        hitPoint: 300,
     },
-    
-    monsters: [
-        { row: 2, column: 3 }
-    ],
 }
 
 /**
@@ -20,6 +20,22 @@ const initialState = {
  */
 function canCharacterEnterCell(cellType) {
     return (cellType === "floor");
+}
+
+/**
+ * Simulate fight of character and monster
+ * @param    {Object} character
+ * @param    {Object} monster
+ * @return   {Object}
+ * @property {String} winner        winner of the fight
+ * @property {Object} characterStat remaining statistics of the character
+ * @property {Object} monsterStat   remaining statistics of the monster
+ */
+function simulateFight(character, monster) {
+    console.log('%cSimulating fight...\n', 
+        'color: white; background: black; ',
+        character, '\n', monster
+    );
 }
 
 /**
@@ -33,7 +49,6 @@ function canCharacterEnterCell(cellType) {
  * @return {boolean}  True if the character can enter the new Position
  */
 function checkValidPosition(maze, height, width, newPosition) {
-    console.log(newPosition);
     const {
         newRow: row,
         newColumn: column,
@@ -46,20 +61,35 @@ function checkValidPosition(maze, height, width, newPosition) {
     return (isPositionInsideMaze && canCharacterEnterCell(maze[row][column].type));
 }
 
+function checkCharacterEnterPosition(maze, character, monsterDetails, newPosition) {
+    const {
+        newRow: row,
+        newColumn: column,
+    } = newPosition;
+    const cellDetails = maze[row][column];
+    
+    if (cellDetails.monsterID !== null) {
+        const monster = monsterDetails[cellDetails.monsterID];
+        simulateFight(character, monster);
+    }
+}
+
 const maze = (state = initialState, action) => {
     switch (action.type) {
-        case 'INITIALIZE_MAP_TILES': {
-            const { mapTileDetails } = action.payload;
+        case 'INITIALIZE_MAP': {
+            const { mapDetails } = action.payload;
             const {
                 height,
                 width,
+                monstersDetails,
                 tilesDetails
-            } = mapTileDetails;
+            } = mapDetails;
 
             return {
                 ...state,
                 gridHeight: height,
                 gridWidth: width,
+                monstersDetails,
                 tilesDetails,
             };
         }
@@ -71,7 +101,9 @@ const maze = (state = initialState, action) => {
             let newRow = row + differenceRow;
             let newColumn = column + differenceColumn;
 
-            if (!checkValidPosition(state.tilesDetails, gridHeight, gridWidth, { newRow, newColumn })) {
+            if (checkValidPosition(state.tilesDetails, gridHeight, gridWidth, { newRow, newColumn })) {
+                checkCharacterEnterPosition(state.tilesDetails, state.character, state.monstersDetails, { newRow, newColumn });
+            } else {
                 newRow = row;
                 newColumn = column;
             }
@@ -79,6 +111,7 @@ const maze = (state = initialState, action) => {
             return {
                 ...state,
                 character: {
+                    ...character,
                     row: newRow,
                     column: newColumn,
                 },
