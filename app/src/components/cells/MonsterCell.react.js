@@ -1,59 +1,58 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-// TODO replace floor.png with character
-import character from '../images/floor.png';
+// TODO use dynamic src prop to render monster 
+import test from '../../images/monsters/green_slime.gif';
 
-export default class CharacterCell extends React.Component {
+export default class MonsterCell extends React.Component {
 
     static propTypes = {
         /**
          * The 0-based x-coordinate of the cell, from left to right
          */
-        x: PropTypes.number.isRequired,
+        column: PropTypes.number.isRequired,
 
         /**
          * The 0-based y-coordinate of the cell, from top to bottom
          */
-        y: PropTypes.number.isRequired,
+        row: PropTypes.number.isRequired,
     };
 
     _getPositionStyle() {
-        const { x, y } = this.props;
-        const width = 60;
+        const { row, column } = this.props;
+        const cellWidth = 60;
 
         return {
             position: 'absolute',
-            top: `${y*width}px`,
-            left: `${x*width}px`,
+            top: `${row*cellWidth}px`,
+            left: `${column*cellWidth}px`,
         };
     }
 
-    _getCharacterStyle() {
+    _getMonsterStyle() {
         return {
             top: 0,
             left: 0,
-            width: '30px',
-            height: '30px',
-            'zIndex': 1,
+            // TODO use constants for z-Index
+            'zIndex': 2,
         };
     }
 
-    _getCharacterSrc() {
-        return character;
+    _getMonsterSrc() {
+        return test;
     }
 
     render() {
         const positionStyle = this._getPositionStyle();
-        const characterStyle = this._getCharacterStyle();
+        const monsterStyle = this._getMonsterStyle();
 
         return (
             <div className='grid__cell' style={positionStyle}>
                 <img
                     alt=''
                     className='grid__cell__img'
-                    style={characterStyle}
-                    src={this._getCharacterSrc()}
+                    style={monsterStyle}
+                    src={this._getMonsterSrc()}
                 />
             </div>
         );

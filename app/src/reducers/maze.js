@@ -4,9 +4,13 @@ const initialState = {
     tilesDetails: [],
 
     character: {
-        x: 3,
-        y: 1,
+        row: 3,
+        column: 1,
     },
+    
+    monsters: [
+        { row: 2, column: 3 }
+    ],
 }
 
 /**
@@ -20,25 +24,25 @@ function canCharacterEnterCell(cellType) {
 
 /**
  * Check if the character can enter a cell defined by x and y
- * @param  {Object}  maze        The maze Object
- * @param  {number}  height      The number of rows of the maze
- * @param  {number}  width       The number of columns of the maze
- * @param  {Object}  newPosition Desired new position of the character
- * @property {number} x
- * @property {number} y
- * @return {boolean} True if the character can enter the new Position
+ * @param  {Object}   maze        The maze Object
+ * @param  {number}   height      The number of rows of the maze
+ * @param  {number}   width       The number of columns of the maze
+ * @param  {Object}   newPosition Desired new position of the character
+ * @property {number} row
+ * @property {number} column
+ * @return {boolean}  True if the character can enter the new Position
  */
 function checkValidPosition(maze, height, width, newPosition) {
     const {
-        newX: x,
-        newY: y,
+        newRow: row,
+        newColumn: column,
     } = newPosition;
     const isPositionInsideMaze = (
-        ((x >= 0) && (x < width)) &&
-        ((y >= 0) && (y < height))
+        ((row >= 0) && (row < height)) &&
+        ((column >= 0) && (column < width))
     );
 
-    return (isPositionInsideMaze && canCharacterEnterCell(maze[x][y].type));
+    return (isPositionInsideMaze && canCharacterEnterCell(maze[row][column].type));
 }
 
 const maze = (state = initialState, action) => {
@@ -59,23 +63,23 @@ const maze = (state = initialState, action) => {
             };
         }
         case 'MOVE_CHARACTER': {
-            const { differenceX, differenceY } = action.payload;
+            const { differenceRow, differenceColumn } = action.payload;
             const { gridHeight, gridWidth, character } = state;
-            const { x, y } = character;
+            const { row, column } = character;
 
-            let newX = x + differenceX;
-            let newY = y + differenceY;
+            let newRow = row + differenceRow;
+            let newColumn = column + differenceColumn;
 
-            if (!checkValidPosition(state.tilesDetails, gridHeight, gridWidth, { newX, newY })) {
-                newX = x;
-                newY = y;
+            if (!checkValidPosition(state.tilesDetails, gridHeight, gridWidth, { newRow, newColumn })) {
+                newRow = row;
+                newColumn = column;
             }
 
             return {
                 ...state,
                 character: {
-                    x: newX,
-                    y: newY,
+                    row: newRow,
+                    column: newColumn,
                 },
             };
         }

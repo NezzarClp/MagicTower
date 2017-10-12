@@ -1,0 +1,23 @@
+Objective done: Implemented sketch for SVG buttons. Imported the real floor.png
+Investigated how svg works. Probably should write a parser/use html-to-react to add "onClick" to svg.
+
+A good time to work on mechanics (therefore a branch). The master branch should now be used to keep "general" processes and features should be implemented on branches to avoid mutual restrictions.
+
+TODO:
+  High priority
+    Create SVG buttons for control panel
+    Design stat panel
+    Fix the position of character image
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Create monsters in grid
+    Start battle mechanics works
+
+  Medium priority
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Enlarge the grid
+    Tidy up README a bit
+    
+  Low priority 
+    Prepare to build minimized version of the app
