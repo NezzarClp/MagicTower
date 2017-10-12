@@ -1,0 +1,19 @@
+.number-field {
+    background: lightblue;
+    display: block;
+    background-clip: border-box;
+    height: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 3px #000000;
+
+    margin: 6px;
+}
+
+.number-field__inner-text {
+    background: white;
+    height: 20px;
+    line-height: 20px;
+    text-align: right;
+    background-clip: content-box;
+    padding: 5px 10px 5px 40px;
+}

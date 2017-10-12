@@ -16,7 +16,6 @@ function mapStateToProps(state) {
 
 export class Grid extends React.Component {
     static propTypes = {
-
         /**
          * Number of rows in the grid
          */
