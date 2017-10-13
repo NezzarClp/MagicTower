@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-// TODO use dynamic src prop to render monster 
+import UIConstants from '../../constants/UIConstants';
+// TODO use dynamic src prop to render monster
 import test from '../../images/monsters/green_slime.gif';
 
 export default class MonsterCell extends React.Component {
@@ -20,7 +21,7 @@ export default class MonsterCell extends React.Component {
 
     _getPositionStyle() {
         const { row, column } = this.props;
-        const cellWidth = 60;
+        const { cellWidth } = UIConstants;
 
         return {
             position: 'absolute',

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import UIConstants from '../constants/UIConstants';
+
 import CharacterCell from './cells/CharacterCell.react';
 import GridCell from './cells/GridCell.react';
 import MonsterCell from './cells/MonsterCell.react';
@@ -99,7 +101,7 @@ export class Grid extends React.Component {
 
     _getGridStyle() {
         const { numRows, numColumns } = this.props;
-        const cellWidth = 60;
+        const { cellWidth } = UIConstants;
 
         return {
             height: `${numRows * cellWidth}px`,

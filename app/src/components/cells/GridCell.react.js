@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import UIConstants from '../../constants/UIConstants';
+
 import wall from '../../images/wall.png';
 // TODO replace floor.png with real floor
 import floor from '../../images/floor.png';
@@ -36,7 +38,7 @@ export class GridCell extends React.Component {
 
     _getPositionStyle() {
         const { row, column } = this.props;
-        const cellWidth = 60;
+        const { cellWidth } = UIConstants;
 
         return {
             position: 'absolute',

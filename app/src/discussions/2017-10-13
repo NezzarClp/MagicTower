@@ -1,0 +1,3 @@
+Objective done: Finshied message box UI
+Probably need to implement buttons. Maybe we should generalize text fields and number fields (use a general <input> for both,
+disabling the input, put the styling on outer wrapper class)

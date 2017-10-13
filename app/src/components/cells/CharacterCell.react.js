@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
+import UIConstants from '../../constants/UIConstants';
+
 // TODO capture character image
 import character from '../../images/character.png';
 
@@ -20,7 +22,7 @@ export default class CharacterCell extends React.Component {
 
     _getPositionStyle() {
         const { row, column } = this.props;
-        const cellWidth = 60;
+        const { cellWidth } = UIConstants;
 
         return {
             position: 'absolute',
@@ -33,8 +35,8 @@ export default class CharacterCell extends React.Component {
         return {
             top: 0,
             left: 0,
-            width: '30px',
-            height: '30px',
+            width: '40px',
+            height: '40px',
             'zIndex': 1,
         };
     }
