@@ -87,7 +87,6 @@ export class Grid extends React.Component {
 
     _getDoorCells() {
         const { doorsDetails } = this.props;
-        console.log(doorsDetails);
         const doorCells = [];
         const numMonstersCoordinates = doorsDetails.length;
 
