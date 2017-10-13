@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import UIConstants from '../constants/UIConstants';
 
 import CharacterCell from './cells/CharacterCell.react';
+import DoorCell from './cells/DoorCell.react';
 import GridCell from './cells/GridCell.react';
 import MonsterCell from './cells/MonsterCell.react';
 
@@ -14,7 +15,8 @@ function mapStateToProps(state) {
         numRows: state.maze.gridHeight,
         numColumns: state.maze.gridWidth,
         character: state.maze.character,
-        monstersCoordinates: state.maze.monsters,
+        monstersDetails: state.maze.monstersDetails,
+        doorsDetails: state.maze.doorsDetails,
     };
 }
 
@@ -36,9 +38,14 @@ export class Grid extends React.Component {
         characters: PropTypes.object,
 
         /**
+         * Coordinates of doors in the grid
+         */
+        doorsDetails: PropTypes.arrayOf(PropTypes.object),
+
+        /**
          * Coordinates of monsters in the grid
          */
-        monstersCoordinates: PropTypes.arrayOf(PropTypes.object),
+        monstersDetails: PropTypes.arrayOf(PropTypes.object),
     };
 
     _getGridCells() {
@@ -78,13 +85,35 @@ export class Grid extends React.Component {
         )
     }
 
-    _getMonsterCells() {
-        const { monstersCoordinates } = this.props;
-        const monsterCells = [];
-        const numMonstersCoordinates = monstersCoordinates.length;
+    _getDoorCells() {
+        const { doorsDetails } = this.props;
+        console.log(doorsDetails);
+        const doorCells = [];
+        const numMonstersCoordinates = doorsDetails.length;
 
         for (let i = 0; i < numMonstersCoordinates; i++) {
-            const { row, column } = monstersCoordinates[i];
+            const { row, column } = doorsDetails[i];
+            const doorCell = (
+                <DoorCell
+                    key={`doorCell${row}_${column}`}
+                    row={row}
+                    column={column}
+                />
+            );
+
+            doorCells.push(doorCell);
+        }
+
+        return doorCells;
+    }
+
+    _getMonsterCells() {
+        const { monstersDetails } = this.props;
+        const monsterCells = [];
+        const numMonstersDetails = monstersDetails.length;
+
+        for (let i = 0; i < numMonstersDetails; i++) {
+            const { row, column } = monstersDetails[i];
             const monsterCell = (
                 <MonsterCell
                     key={`monsterCell${row}_${column}`}
@@ -114,6 +143,7 @@ export class Grid extends React.Component {
     render() {
         const gridCells = this._getGridCells();
         const characterCells = this._getCharacterCells();
+        const doorCells = this._getDoorCells();
         const monsterCells = this._getMonsterCells();
         const gridStyle = this._getGridStyle();
 
@@ -121,6 +151,7 @@ export class Grid extends React.Component {
             <div style={gridStyle}>
                 {gridCells}
                 {characterCells}
+                {doorCells}
                 {monsterCells}
             </div>
         );

@@ -1,18 +1,20 @@
 export default {
 
     /**
-     * Action object to initialze maze reducer by map tiles details object
-     * @param    {Object} mapTileDetails
-     * @property {number} height       number of rows of the grid
-     * @property {number} width        number of columns of the grid
-     * @property {Array}  tilesDetails list of tiles details
+     * Action object to initialze maze reducer by map details object
+     * @param    {Object} mapDetails
+     * @property {number} height          number of rows of the grid
+     * @property {number} width           number of columns of the grid
+     * @property {Array}  doorsDetails    list of doors details
+     * @property {Array}  monstersDetails list of monster details
+     * @property {Array}  tilesDetails    list of tiles details
      * @return   {Object} action Object
      */
-    initialzeMapTiles(mapTileDetails) {
+    initialzeMap(mapDetails) {
         return {
-            type: 'INITIALIZE_MAP_TILES',
+            type: 'INITIALIZE_MAP',
             payload: {
-                mapTileDetails,
+                mapDetails,
             },
         }
     },
