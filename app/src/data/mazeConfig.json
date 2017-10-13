@@ -40,5 +40,12 @@
     
     "mapMonsterTypeToString": {
         "1": "green_slime"
-    }
+    },
+    
+    "doors": [
+        {
+            "row": 0,
+            "column": 1
+        }
+    ]
 }

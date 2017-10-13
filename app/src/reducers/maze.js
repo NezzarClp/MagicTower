@@ -1,6 +1,7 @@
 const initialState = {
     gridHeght: 0,
     gridWidth: 0,
+    doorsDetails: [],
     monstersDetails: [],
     tilesDetails: [],
 
@@ -81,6 +82,7 @@ const maze = (state = initialState, action) => {
             const {
                 height,
                 width,
+                doorsDetails,
                 monstersDetails,
                 tilesDetails
             } = mapDetails;
@@ -89,6 +91,7 @@ const maze = (state = initialState, action) => {
                 ...state,
                 gridHeight: height,
                 gridWidth: width,
+                doorsDetails,
                 monstersDetails,
                 tilesDetails,
             };

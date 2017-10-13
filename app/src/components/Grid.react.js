@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import CharacterCell from './cells/CharacterCell.react';
+import DoorCell from './cells/DoorCell.react';
 import GridCell from './cells/GridCell.react';
 import MonsterCell from './cells/MonsterCell.react';
 
@@ -13,6 +14,7 @@ function mapStateToProps(state) {
         numColumns: state.maze.gridWidth,
         character: state.maze.character,
         monstersDetails: state.maze.monstersDetails,
+        doorsDetails: state.maze.doorsDetails,
     };
 }
 
@@ -33,6 +35,11 @@ export class Grid extends React.Component {
          * Character object in the grid
          */
         characters: PropTypes.object,
+        
+        /**
+         * Coordinates of doors in the grid
+         */
+        doorsDetails: PropTypes.arrayOf(PropTypes.object),
         
         /**
          * Coordinates of monsters in the grid
@@ -76,6 +83,28 @@ export class Grid extends React.Component {
             />
         )
     }
+    
+    _getDoorCells() {
+        const { doorsDetails } = this.props;
+        console.log(doorsDetails);
+        const doorCells = [];
+        const numMonstersCoordinates = doorsDetails.length;
+        
+        for (let i = 0; i < numMonstersCoordinates; i++) {
+            const { row, column } = doorsDetails[i];
+            const doorCell = (
+                <DoorCell 
+                    key={`doorCell${row}_${column}`}
+                    row={row}
+                    column={column}
+                />
+            );
+            
+            doorCells.push(doorCell);
+        }
+        
+        return doorCells;
+    }
 
     _getMonsterCells() {
         const { monstersDetails } = this.props;
@@ -113,6 +142,7 @@ export class Grid extends React.Component {
     render() {
         const gridCells = this._getGridCells();
         const characterCells = this._getCharacterCells();
+        const doorCells = this._getDoorCells();
         const monsterCells = this._getMonsterCells();
         const gridStyle = this._getGridStyle();
 
@@ -120,6 +150,7 @@ export class Grid extends React.Component {
             <div style={gridStyle}>
                 {gridCells}
                 {characterCells}
+                {doorCells}
                 {monsterCells}
             </div>
         );
