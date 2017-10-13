@@ -12,7 +12,7 @@ function mapStateToProps(state) {
         numRows: state.maze.gridHeight,
         numColumns: state.maze.gridWidth,
         character: state.maze.character,
-        monstersCoordinates: state.maze.monsters,
+        monstersDetails: state.maze.monstersDetails,
     };
 }
 
@@ -37,7 +37,7 @@ export class Grid extends React.Component {
         /**
          * Coordinates of monsters in the grid
          */
-        monstersCoordinates: PropTypes.arrayOf(PropTypes.object),
+        monstersDetails: PropTypes.arrayOf(PropTypes.object),
     };
 
     _getGridCells() {
@@ -78,12 +78,12 @@ export class Grid extends React.Component {
     }
 
     _getMonsterCells() {
-        const { monstersCoordinates } = this.props;
+        const { monstersDetails } = this.props;
         const monsterCells = [];
-        const numMonstersCoordinates = monstersCoordinates.length;
+        const numMonstersDetails = monstersDetails.length;
         
-        for (let i = 0; i < numMonstersCoordinates; i++) {
-            const { row, column } = monstersCoordinates[i];
+        for (let i = 0; i < numMonstersDetails; i++) {
+            const { row, column } = monstersDetails[i];
             const monsterCell = (
                 <MonsterCell 
                     key={`monsterCell${row}_${column}`}

@@ -17,5 +17,28 @@
     "mapTilesIDToString": {
         "0": "wall",
         "1": "floor"
+    },
+    
+    "monsters": [
+        {
+            "row": 3,
+            "column": 3,
+            "attack": 20,
+            "defend": 5,
+            "hitPoint": 30,
+            "type": 1
+        },
+        {
+            "row": 2,
+            "column": 3,
+            "attack": 20,
+            "defend": 5,
+            "hitPoint": 30,
+            "type": 1
+        }
+    ],
+    
+    "mapMonsterTypeToString": {
+        "1": "green_slime"
     }
 }
