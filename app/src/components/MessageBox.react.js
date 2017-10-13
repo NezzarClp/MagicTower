@@ -1,16 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-export default class MessageBox extends React.Component {
+import { connect } from 'react-redux';
+
+function mapStateToProps(state) {
+    return {
+        displayText: state.message.displayText,
+    };
+}
+
+export class MessageBox extends React.Component {
     static PropTypes = {
         /**
          * The string displayed
          */
-        displayText: PropTypes.string
+        displayText: PropTypes.string,
     };
 
     static defaultProps = {
-        displayText: 'Hello',
+        displayText: '',
     };
 
     render() {
@@ -24,3 +32,5 @@ export default class MessageBox extends React.Component {
         );
     }
 }
+
+export default connect(mapStateToProps)(MessageBox);
