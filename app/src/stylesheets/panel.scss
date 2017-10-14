@@ -19,6 +19,15 @@
     &:first-child {
         margin-bottom: 10px;
     }
+
+    &__groupped {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        .number-field {
+            width: 100px;
+        }
+    }
 }
 
 .panel--control {

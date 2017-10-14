@@ -7,9 +7,19 @@ export default class StatPanel extends React.Component {
     render() {
         return (
             <div className="panel--stat">
-                <NumberField number={3} />
-                <NumberField number={3} />
-                <NumberField number={3} />
+                <div>
+                    <NumberField number={3} />
+                    <NumberField number={3} />
+                    <NumberField number={3} />
+                </div>
+                <div className="panel--stat__groupped">
+                    <NumberField number={3} />
+                    <NumberField number={3} />
+                </div>
+                <div className="panel--stat__groupped">
+                    <NumberField number={3} />
+                    <NumberField number={3} />
+                </div>
             </div>
         );
     }
