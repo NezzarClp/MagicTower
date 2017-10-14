@@ -1,5 +1,7 @@
+import _ from 'lodash';
+
 const initialState = {
-    gridHeght: 0,
+    gridHeight: 0,
     gridWidth: 0,
     doorsDetails: [],
     monstersDetails: [],
@@ -15,12 +17,12 @@ const initialState = {
 }
 
 /**
- * Check if the character can enter a cell defined by cell type
- * @param  {string} cellType type of the cell
+ * Check if the character can enter a cell
+ * @param  {Object} cell
  * @return {boolean}
  */
-function canCharacterEnterCell(cellType) {
-    return (cellType === "floor");
+function canCharacterEnterCell(cell) {
+    return (cell.type === "floor");
 }
 
 /**
@@ -33,7 +35,7 @@ function canCharacterEnterCell(cellType) {
  * @property {Object} monsterStat   remaining statistics of the monster
  */
 function simulateFight(character, monster) {
-    console.log('%cSimulating fight...\n', 
+    console.log('%cSimulating fight...\n',
         'color: white; background: black; ',
         character, '\n', monster
     );
@@ -41,38 +43,70 @@ function simulateFight(character, monster) {
 
 /**
  * Check if the character can enter a cell defined by x and y
- * @param  {Object}   maze        The maze Object
- * @param  {number}   height      The number of rows of the maze
- * @param  {number}   width       The number of columns of the maze
- * @param  {Object}   newPosition Desired new position of the character
+ * @param  {Object}   newState new State of the maze
+ * @param  {Object}   newPosition
  * @property {number} row
  * @property {number} column
  * @return {boolean}  True if the character can enter the new Position
  */
-function checkValidPosition(maze, height, width, newPosition) {
+function checkValidPosition(newState, newPosition) {
     const {
-        newRow: row,
-        newColumn: column,
+        gridHeight: height,
+        gridWidth: width,
+        tilesDetails: maze,
+    } = newState;
+    const {
+        row,
+        column,
     } = newPosition;
     const isPositionInsideMaze = (
         ((row >= 0) && (row < height)) &&
         ((column >= 0) && (column < width))
     );
 
-    return (isPositionInsideMaze && canCharacterEnterCell(maze[row][column].type));
+    return (isPositionInsideMaze && canCharacterEnterCell(maze[row][column]));
 }
 
-function checkCharacterEnterPosition(maze, character, monsterDetails, newPosition) {
+/**
+ * Remove a monster on gridWidth
+ * Return new objects representing updated objects as result
+ * @param    {Object} newState
+ * @param    {Object} newPosition
+ * @property {number} row
+ * @property {number} column
+ */
+function removeMonsters(newState, newPosition) {
     const {
-        newRow: row,
-        newColumn: column,
+        row,
+        column,
+    } = newPosition;
+
+    newState.monstersDetails = newState.monstersDetails.filter((monster) => (
+        (monster.row !== row) || (monster.column !== column)
+    ));
+}
+
+function checkAndUpdateMazeState(newState, newPosition) {
+    const {
+        character,
+        tilesDetails: maze,
+        monstersDetails,
+    } = newState;
+    const {
+        row,
+        column,
     } = newPosition;
     const cellDetails = maze[row][column];
-    
+
     if (cellDetails.monsterID !== null) {
-        const monster = monsterDetails[cellDetails.monsterID];
+        const monster = monstersDetails[cellDetails.monsterID];
         simulateFight(character, monster);
+        cellDetails.monsterID = null;
+        removeMonsters(newState, newPosition);
     }
+
+
+    return monstersDetails;
 }
 
 const maze = (state = initialState, action) => {
@@ -98,27 +132,20 @@ const maze = (state = initialState, action) => {
         }
         case 'MOVE_CHARACTER': {
             const { differenceRow, differenceColumn } = action.payload;
-            const { gridHeight, gridWidth, character } = state;
-            const { row, column } = character;
+            const { character } = state;
+            let { row, column } = character;
 
-            let newRow = row + differenceRow;
-            let newColumn = column + differenceColumn;
+            let newState = _.cloneDeep(state);
+            row += differenceRow;
+            column += differenceColumn;
 
-            if (checkValidPosition(state.tilesDetails, gridHeight, gridWidth, { newRow, newColumn })) {
-                checkCharacterEnterPosition(state.tilesDetails, state.character, state.monstersDetails, { newRow, newColumn });
-            } else {
-                newRow = row;
-                newColumn = column;
+            if (checkValidPosition(newState, { row, column })) {
+                newState.character.row = row;
+                newState.character.column = column;
+                checkAndUpdateMazeState(newState, { row, column });
             }
 
-            return {
-                ...state,
-                character: {
-                    ...character,
-                    row: newRow,
-                    column: newColumn,
-                },
-            };
+            return newState;
         }
 
         default:
