@@ -111,7 +111,6 @@ export class Grid extends React.Component {
         const monsterCells = [];
 
         for (let monsterID in monstersDetails) {
-            console.log('hi');
             const { row, column } = monstersDetails[monsterID];
             const monsterCell = (
                 <MonsterCell
