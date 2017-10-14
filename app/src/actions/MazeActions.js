@@ -6,7 +6,7 @@ export default {
      * @property {number} height          number of rows of the grid
      * @property {number} width           number of columns of the grid
      * @property {Array}  doorsDetails    list of doors details
-     * @property {Array}  monstersDetails list of monster details
+     * @property {Object} monstersDetails list of monster details paired with ID
      * @property {Array}  tilesDetails    list of tiles details
      * @return   {Object} action Object
      */

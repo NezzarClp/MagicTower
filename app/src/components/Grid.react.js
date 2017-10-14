@@ -45,7 +45,7 @@ export class Grid extends React.Component {
         /**
          * Coordinates of monsters in the grid
          */
-        monstersDetails: PropTypes.arrayOf(PropTypes.object),
+        monstersDetails: PropTypes.object,
     };
 
     _getGridCells() {
@@ -109,10 +109,10 @@ export class Grid extends React.Component {
     _getMonsterCells() {
         const { monstersDetails } = this.props;
         const monsterCells = [];
-        const numMonstersDetails = monstersDetails.length;
 
-        for (let i = 0; i < numMonstersDetails; i++) {
-            const { row, column } = monstersDetails[i];
+        for (let monsterID in monstersDetails) {
+            console.log('hi');
+            const { row, column } = monstersDetails[monsterID];
             const monsterCell = (
                 <MonsterCell
                     key={`monsterCell${row}_${column}`}

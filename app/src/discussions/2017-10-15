@@ -1,5 +1,10 @@
-Objective done: Implemented mechanics to remove a monster as it's killed
-Gonna work on displaying information on number fields. Probably should do number field refactoring (and add text) now.
+Objective done: Simulating fight, and support displaying information of character
+Refactored 1. maze reducer 2. monstersDetails.object
+
+It shows that planning how the object will be used beforehand is quite important.
+Moreover, we should use object whenever possible. Array indices can be nasty.
+Should refactor doorsDetails as well when implementing removal of door.
+Moreover, it's a good time to modify the format of maze.js to group properties of monsters of same type.
 
 TODO:
   High priority
@@ -9,10 +14,12 @@ TODO:
     Implement battle mechanics
 
   Medium priority
+    Refactor doorsDetails from array to object
     Update message box
     Create character png with transparent background
     Move all constants to constant files
     Move more types of tiles to codebase
+    Enlarge the grid
     Enlarge the grid
     Tidy up README a bit
 

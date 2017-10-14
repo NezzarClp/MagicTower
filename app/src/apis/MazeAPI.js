@@ -21,7 +21,7 @@ export default {
             } = mazeConfig;
             const numRows = mazeTiles.length;
             const doorsDetails = [];
-            const monstersDetails = [];
+            const monstersDetails = {};
             const tilesDetails = [];
 
             const height = numRows;
@@ -47,24 +47,25 @@ export default {
 
                 tilesDetails.push(mazeTilesRowDetails);
             }
-            
+
             const numMonsters = monsters.length;
-            
+
             for (let i = 0; i < numMonsters; i++) {
                 const monster = monsters[i];
                 const { row, column } = monster;
-                
-                monstersDetails.push(monster);
+
+                monstersDetails[i] = monster;
+
                 tilesDetails[row][column].monsterID = i;
             }
-            
+
             const numDoors = doors.length;
-            
+
             for (let i = 0; i < numDoors; i++) {
                 const door = doors[i];
                 doorsDetails.push(door);
             }
-    
+
             resolve({
                 height,
                 width,

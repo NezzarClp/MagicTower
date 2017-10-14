@@ -4,7 +4,7 @@ const initialState = {
     gridHeight: 0,
     gridWidth: 0,
     doorsDetails: [],
-    monstersDetails: [],
+    monstersDetails: {},
     tilesDetails: [],
 
     character: {
@@ -14,6 +14,20 @@ const initialState = {
         defend: 5,
         hitPoint: 300,
     },
+}
+
+/**
+ * Return maximum of two values
+ * @param  {number} a
+ * @param  {number} b
+ * @return {number}
+ */
+function max(a, b) {
+    if (a > b) {
+        return a;
+    }
+
+    return b;
 }
 
 /**
@@ -27,18 +41,40 @@ function canCharacterEnterCell(cell) {
 
 /**
  * Simulate fight of character and monster
- * @param    {Object} character
- * @param    {Object} monster
- * @return   {Object}
- * @property {String} winner        winner of the fight
- * @property {Object} characterStat remaining statistics of the character
- * @property {Object} monsterStat   remaining statistics of the monster
+ * @param  {Object} character
+ * @param  {Object} monster
+ * @return {string} winner    winner of the fight
  */
 function simulateFight(character, monster) {
     console.log('%cSimulating fight...\n',
         'color: white; background: black; ',
         character, '\n', monster
     );
+
+    let currentTurn = "CHARACTER";
+
+    while (
+        (character.hitPoint > 0) &&
+        (monster.hitPoint > 0)
+    ) {
+        let attacker, defender;
+        if (currentTurn === "CHARACTER") {
+            attacker = character;
+            defender = monster;
+        } else {
+            attacker = monster;
+            defender = character;
+        }
+
+        const damageDone = max(0, attacker.attack - defender.defend);
+        defender.hitPoint -= damageDone;
+
+        if (currentTurn === "CHARACTER") {
+            currentTurn = "MONSTER";
+        } else {
+            currentTurn = "CHARACTER";
+        }
+    }
 }
 
 /**
@@ -68,24 +104,21 @@ function checkValidPosition(newState, newPosition) {
 }
 
 /**
- * Remove a monster on gridWidth
- * Return new objects representing updated objects as result
+ * Remove a monster on monstersDetails
+ * @param {Object} monstersDetails
+ * @param {number} monsterID
+ */
+function removeMonsters(monstersDetails, monsterID) {
+    delete monstersDetails[monsterID];
+}
+
+/**
+ * Update the state according to the newPosition
  * @param    {Object} newState
- * @param    {Object} newPosition
+ * @param    {Object} newPosition the expected new position of the character
  * @property {number} row
  * @property {number} column
  */
-function removeMonsters(newState, newPosition) {
-    const {
-        row,
-        column,
-    } = newPosition;
-
-    newState.monstersDetails = newState.monstersDetails.filter((monster) => (
-        (monster.row !== row) || (monster.column !== column)
-    ));
-}
-
 function checkAndUpdateMazeState(newState, newPosition) {
     const {
         character,
@@ -97,16 +130,18 @@ function checkAndUpdateMazeState(newState, newPosition) {
         column,
     } = newPosition;
     const cellDetails = maze[row][column];
+    const { monsterID } = cellDetails;
 
-    if (cellDetails.monsterID !== null) {
-        const monster = monstersDetails[cellDetails.monsterID];
-        simulateFight(character, monster);
+    if (monsterID !== null) {
+        const monster = monstersDetails[monsterID];
+        const newCharacter = _.cloneDeep(character);
+        const newMonster = _.cloneDeep(monster);
+        simulateFight(newCharacter, newMonster);
+        newState.character = newCharacter;
+        monstersDetails[monsterID] = newMonster;
         cellDetails.monsterID = null;
-        removeMonsters(newState, newPosition);
+        removeMonsters(monstersDetails, monsterID);
     }
-
-
-    return monstersDetails;
 }
 
 const maze = (state = initialState, action) => {
