@@ -1,0 +1,4 @@
+Objective done: started implementing game options panel--stat
+
+Possibly need to implement a custom button class anyway. Maybe a button class that supports a number field inside?
+Also a good time to refactor number field
