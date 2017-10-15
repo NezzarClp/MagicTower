@@ -41,6 +41,32 @@ export class KeyboardInput extends React.Component {
             onKeyClick,
         } = this.props;
 
+        this._addNewKeyMaps(keyMaps, onKeyClick);
+    }
+
+    componentWillReceiveProps(prevProps, nextProps) {
+        const {
+            keyMaps: prevKeyMaps,
+            onKeyClick,
+        } = prevProps;
+        const {
+            keyMaps: nextKeyMaps,
+        } = nextProps;
+
+        this._removeOldKeyMaps(prevKeyMaps, onKeyClick);
+        this._addNewKeyMaps(nextKeyMaps, onKeyClick);
+    }
+
+    componentWillUnmount() {
+        const {
+            keyMaps,
+            onKeyClick,
+        } = this.props;
+
+        this._removeOldKeyMaps(keyMaps, onKeyClick);
+    }
+
+    _addNewKeyMaps(keyMaps, onKeyClick) {
         for (let keyMap in keyMaps) {
             const keyMapFunction = keyMaps[keyMap].func;
             const keyMapParameters = keyMaps[keyMap].param;
@@ -52,12 +78,16 @@ export class KeyboardInput extends React.Component {
         }
     }
 
-    componentWillReceiveProps() {
-
-    }
-
-    componentWillUnmount() {
-
+    _removeOldKeyMaps(keyMaps, onKeyClick) {
+        for (let keyMap in keyMaps) {
+            const keyMapFunction = keyMaps[keyMap].func;
+            const keyMapParameters = keyMaps[keyMap].param;
+            window.removeEventListener("keydown", (e) => {
+                if (e.keyCode.toString() === keyMap) {
+                    onKeyClick(keyMapFunction, keyMapParameters);
+                }
+            });
+        }
     }
 
     render() {
