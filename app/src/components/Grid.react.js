@@ -35,12 +35,12 @@ export class Grid extends React.Component {
          * Character object in the grid
          */
         characters: PropTypes.object,
-        
+
         /**
          * Coordinates of doors in the grid
          */
         doorsDetails: PropTypes.arrayOf(PropTypes.object),
-        
+
         /**
          * Coordinates of monsters in the grid
          */
@@ -52,7 +52,7 @@ export class Grid extends React.Component {
             numRows,
             numColumns,
         } = this.props;
-        
+
         const gridCells = [];
 
         for (let i = 0; i < numRows; i++) {
@@ -83,26 +83,25 @@ export class Grid extends React.Component {
             />
         )
     }
-    
+
     _getDoorCells() {
         const { doorsDetails } = this.props;
-        console.log(doorsDetails);
         const doorCells = [];
         const numMonstersCoordinates = doorsDetails.length;
-        
+
         for (let i = 0; i < numMonstersCoordinates; i++) {
             const { row, column } = doorsDetails[i];
             const doorCell = (
-                <DoorCell 
+                <DoorCell
                     key={`doorCell${row}_${column}`}
                     row={row}
                     column={column}
                 />
             );
-            
+
             doorCells.push(doorCell);
         }
-        
+
         return doorCells;
     }
 
@@ -110,20 +109,20 @@ export class Grid extends React.Component {
         const { monstersDetails } = this.props;
         const monsterCells = [];
         const numMonstersDetails = monstersDetails.length;
-        
+
         for (let i = 0; i < numMonstersDetails; i++) {
             const { row, column } = monstersDetails[i];
             const monsterCell = (
-                <MonsterCell 
+                <MonsterCell
                     key={`monsterCell${row}_${column}`}
                     row={row}
                     column={column}
                 />
             );
-            
+
             monsterCells.push(monsterCell);
         }
-        
+
         return monsterCells;
     }
 

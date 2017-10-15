@@ -1,0 +1,19 @@
+Objective done: Implemented initial draft for keyboard input for moving character around.
+
+TODO:
+  High priority
+    Finish KeyboardInput, as we need to 1. use props from store instead of hardcode 2. finish componentWillReceiveProps and componentWillUnmount
+    Design stat panel
+    Fix the position of character image
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Implement battle mechanics
+
+  Medium priority
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Enlarge the grid
+    Tidy up README a bit
+
+  Low priority
+    Prepare to build minimized version of the app
