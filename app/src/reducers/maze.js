@@ -158,6 +158,7 @@ function checkAndUpdateMazeState(newState, newPosition) {
 
     if (doorID !== null) {
         removeDoor(newState, doorID);
+        newState.character.yellowKey--;
     }
 }
 
