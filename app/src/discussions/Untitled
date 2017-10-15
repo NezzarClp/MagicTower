@@ -1,0 +1,25 @@
+Objective done: Created a python code to convert pngs in tiles format to gif.
+
+Seems it's really hard to understand gif's alpha channel principle, should take time to study it.
+
+TODO:
+  High priority
+    Tidy up bone.gif and related files to be true bone.gif and so on
+    Refactor number field
+    Fix the position of character image
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Implement battle mechanics
+
+  Medium priority
+    Refactor doorsDetails from array to object
+    Update message box
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Enlarge the grid
+    Enlarge the grid
+    Tidy up README a bit
+
+  Low priority
+    Prepare to build minimized version of the app
+    Routing investigation
