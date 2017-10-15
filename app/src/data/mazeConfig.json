@@ -41,6 +41,11 @@
             "row": 2,
             "column": 3,
             "type": 1
+        },
+        {
+            "row": 4,
+            "column": 2,
+            "type": 2
         }
     ],
 
@@ -51,8 +56,16 @@
             "attack": 23,
             "defend": 5,
             "hitPoint": 50
+        },
+        "2": {
+            "name": "red_slime",
+            "imgSrc": "red_slime",
+            "attack": 40,
+            "defend": 12,
+            "hitPoint": 80
         }
     },
+    
 
     "doors": [
         {
