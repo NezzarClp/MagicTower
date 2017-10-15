@@ -111,12 +111,13 @@ export class Grid extends React.Component {
         const monsterCells = [];
 
         for (let monsterID in monstersDetails) {
-            const { row, column } = monstersDetails[monsterID];
+            const { row, column, imgSrc } = monstersDetails[monsterID];
             const monsterCell = (
                 <MonsterCell
                     key={`monsterCell${row}_${column}`}
                     row={row}
                     column={column}
+                    src={imgSrc}
                 />
             );
 

@@ -1,0 +1,25 @@
+Objective done: Import images from src
+From official doc, seems the suggested way of dynamic source is importing from a file, then use the file directly.
+Seems troublesome to me, as the advantages they raised (error when file not found, easier to compile) does not make a lot of sense for me.
+Should keep an eye for the new public method, and compare it with my approach later.
+
+TODO:
+  High priority
+    Refactor number field
+    Fix the position of character image
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Implement battle mechanics
+
+  Medium priority
+    Refactor doorsDetails from array to object
+    Update message box
+    Create character png with transparent background
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Enlarge the grid
+    Enlarge the grid
+    Tidy up README a bit
+
+  Low priority
+    Prepare to build minimized version of the app
+    Routing investigation

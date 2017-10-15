@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import UIConstants from '../../constants/UIConstants';
-// TODO use dynamic src prop to render monster
-import test from '../../images/monsters/green_slime.gif';
+
+import monstersImage from '../../images/monsters';
 
 export default class MonsterCell extends React.Component {
 
@@ -17,6 +17,11 @@ export default class MonsterCell extends React.Component {
          * The 0-based y-coordinate of the cell, from top to bottom
          */
         row: PropTypes.number.isRequired,
+
+        /**
+         * Source of the monster cell
+         */
+        src: PropTypes.string,
     };
 
     _getPositionStyle() {
@@ -39,13 +44,10 @@ export default class MonsterCell extends React.Component {
         };
     }
 
-    _getMonsterSrc() {
-        return test;
-    }
-
     render() {
         const positionStyle = this._getPositionStyle();
         const monsterStyle = this._getMonsterStyle();
+        const src = monstersImage[this.props.src];
 
         return (
             <div className='grid__cell' style={positionStyle}>
@@ -53,7 +55,7 @@ export default class MonsterCell extends React.Component {
                     alt=''
                     className='grid__cell__img'
                     style={monsterStyle}
-                    src={this._getMonsterSrc()}
+                    src={src}
                 />
             </div>
         );

@@ -16,6 +16,7 @@ export default {
             const {
                 doors,
                 mazeTiles,
+                mapMonsterTypeToDetails,
                 mapTilesIDToString,
                 monsters,
             } = mazeConfig;
@@ -54,7 +55,10 @@ export default {
                 const monster = monsters[i];
                 const { row, column } = monster;
 
-                monstersDetails[i] = monster;
+                monstersDetails[i] = {
+                    ...monster,
+                    ...mapMonsterTypeToDetails[monster.type],
+                };
 
                 tilesDetails[row][column].monsterID = i;
             }
