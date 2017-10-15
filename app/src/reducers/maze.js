@@ -3,17 +3,14 @@ import _ from 'lodash';
 const initialState = {
     gridHeight: 0,
     gridWidth: 0,
-    doorsDetails: [],
+    doorsDetails: {},
     monstersDetails: {},
     tilesDetails: [],
 
     character: {
-        row: 3,
-        column: 1,
-        attack: 25,
-        defend: 5,
-        hitPoint: 300,
-    },
+        row: 0,
+        column: 0,
+    }
 }
 
 /**
@@ -105,11 +102,26 @@ function checkValidPosition(newState, newPosition) {
 
 /**
  * Remove a monster on monstersDetails
- * @param {Object} monstersDetails
+ * @param {Object} newState
  * @param {number} monsterID
  */
-function removeMonsters(monstersDetails, monsterID) {
-    delete monstersDetails[monsterID];
+function removeMonster(newState, monsterID) {
+    const { row, column } = newState.monstersDetails[monsterID];
+
+    newState.tilesDetails[row][column].monsterID = null;
+    delete newState.monstersDetails[monsterID];
+}
+
+/**
+ * Remove a door on doorsDetails
+ * @param {Object} newState
+ * @param {number} doorID
+ */
+function removeDoor(newState, doorID) {
+    const { row, column } = newState.doorsDetails[doorID];
+
+    newState.tilesDetails[row][column].doorID = null;
+    delete newState.doorsDetails[doorID];
 }
 
 /**
@@ -130,7 +142,10 @@ function checkAndUpdateMazeState(newState, newPosition) {
         column,
     } = newPosition;
     const cellDetails = maze[row][column];
-    const { monsterID } = cellDetails;
+    const {
+        doorID,
+        monsterID
+    } = cellDetails;
 
     if (monsterID !== null) {
         const monster = monstersDetails[monsterID];
@@ -138,31 +153,29 @@ function checkAndUpdateMazeState(newState, newPosition) {
         const newMonster = _.cloneDeep(monster);
         simulateFight(newCharacter, newMonster);
         newState.character = newCharacter;
-        monstersDetails[monsterID] = newMonster;
-        cellDetails.monsterID = null;
-        removeMonsters(monstersDetails, monsterID);
+        removeMonster(newState, monsterID);
+    }
+
+    if (doorID !== null) {
+        removeDoor(newState, doorID);
     }
 }
 
 const maze = (state = initialState, action) => {
     switch (action.type) {
+        case 'INITIALIZE_CHARACTER': {
+            const { character } = action.payload;
+            return {
+                ...state,
+                character,
+            };
+        }
         case 'INITIALIZE_MAP': {
             const { mapDetails } = action.payload;
-            const {
-                height,
-                width,
-                doorsDetails,
-                monstersDetails,
-                tilesDetails
-            } = mapDetails;
 
             return {
                 ...state,
-                gridHeight: height,
-                gridWidth: width,
-                doorsDetails,
-                monstersDetails,
-                tilesDetails,
+                ...mapDetails,
             };
         }
         case 'MOVE_CHARACTER': {

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import MazeActions from './actions/MazeActions';
 
+import CharacterAPI from './apis/CharacterAPI';
 import MazeAPI from './apis/MazeAPI';
 
 import Grid from './components/Grid.react';
@@ -13,15 +14,22 @@ import Panel from './components/Panel.react';
 
 function mapDispatchToProps(dispatch) {
     return {
+        initializeCharacter: (character) => {
+            dispatch(MazeActions.initializeCharacter(character));
+        },
         initialzeMap: (mazeDetails) => {
             dispatch(MazeActions.initialzeMap(mazeDetails));
-        }
+        },
     }
 }
 
 export class App extends React.Component {
 
     static propTypes = {
+        /**
+         * Function to be called when character data is ready
+         */
+        initializeCharacter: PropTypes.func,
 
         /**
          * Function to be called when map tiles are ready
@@ -30,11 +38,18 @@ export class App extends React.Component {
     }
 
     _initializeApp() {
-        const { initialzeMap } = this.props;
+        const {
+            initializeCharacter,
+            initialzeMap,
+        } = this.props;
         MazeAPI.readMazeTiles()
             .then((mazeDetails) => {
                 initialzeMap(mazeDetails);
             });
+        CharacterAPI.readCharacter()
+            .then((character) => {
+                initializeCharacter(character);
+            })
     }
 
     componentDidMount() {
@@ -48,7 +63,7 @@ export class App extends React.Component {
             }}>
                 <div style={{
                     display: 'flex',
-                }}>    
+                }}>
                     <Grid />
                     <Panel />
                 </div>

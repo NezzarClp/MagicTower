@@ -9,7 +9,7 @@ export default {
 
     /**
      * Read the tiles of the maze from source
-     * return @{Promise} Promise that returns when the tiles are read
+     * @return {Promise} Promise that returns when the tiles are read
      */
     readMazeTiles() {
         return new Promise((resolve, reject) => {
@@ -21,26 +21,26 @@ export default {
                 monsters,
             } = mazeConfig;
             const numRows = mazeTiles.length;
-            const doorsDetails = [];
+            const doorsDetails = {};
             const monstersDetails = {};
             const tilesDetails = [];
 
-            const height = numRows;
-            let width = 0;
+            const gridHeight = numRows;
+            let gridWidth = 0;
 
             for (let i = 0; i < numRows; i++) {
                 const mazeTileRow = mazeTiles[i];
                 const numTiles = mazeTileRow.length;
                 const mazeTilesRowDetails = [];
 
-                if (numTiles > width) {
-                    width = numTiles;
+                if (numTiles > gridWidth) {
+                    gridWidth = numTiles;
                 }
 
                 for (let j = 0; j < numTiles; j++) {
                     const mazeTileType = mazeTileRow[j];
                     mazeTilesRowDetails.push({
-                        doorType: null,
+                        doorID: null,
                         monsterID: null,
                         type: mapTilesIDToString[mazeTileType],
                     });
@@ -67,12 +67,18 @@ export default {
 
             for (let i = 0; i < numDoors; i++) {
                 const door = doors[i];
-                doorsDetails.push(door);
+                const { row, column } = door;
+
+                doorsDetails[i] = {
+                    ...door,
+                };
+
+                tilesDetails[row][column].doorID = i;
             }
 
             resolve({
-                height,
-                width,
+                gridHeight,
+                gridWidth,
                 doorsDetails,
                 monstersDetails,
                 tilesDetails,

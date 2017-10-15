@@ -1,11 +1,24 @@
 export default {
+    /**
+     * Action creator to initialze maze reducer by character data object
+     * @param  {Object} character
+     * @return {Object} action object
+     */
+    initializeCharacter(character) {
+        return {
+            type: 'INITIALIZE_CHARACTER',
+            payload: {
+                character
+            },
+        }
+    },
 
     /**
-     * Action object to initialze maze reducer by map details object
+     * Action creator to initialze maze reducer by map details object
      * @param    {Object} mapDetails
-     * @property {number} height          number of rows of the grid
-     * @property {number} width           number of columns of the grid
-     * @property {Array}  doorsDetails    list of doors details
+     * @property {number} gridHeight      number of rows of the grid
+     * @property {number} gridWidth       number of columns of the grid
+     * @property {Object} doorsDetails    list of doors details paired with ID
      * @property {Object} monstersDetails list of monster details paired with ID
      * @property {Array}  tilesDetails    list of tiles details
      * @return   {Object} action Object
@@ -19,6 +32,12 @@ export default {
         }
     },
 
+    /**
+     * Action creator to move the character by specific differenceRow
+     * @param  {number} differenceRow
+     * @param  {number} differenceColumn
+     * @return {Object} action object
+     */
     moveCharacter(differenceRow, differenceColumn) {
         return {
             type: 'MOVE_CHARACTER',
