@@ -11,6 +11,7 @@ import MazeAPI from './apis/MazeAPI';
 import Grid from './components/Grid.react';
 import MessageBox from './components/MessageBox.react';
 import Panel from './components/Panel.react';
+import KeyboardInput from './components/KeyboardInput.react';
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -58,16 +59,40 @@ export class App extends React.Component {
 
     render() {
         return (
-            <div className="App" style={{
-                margin: '8px',
-            }}>
-                <div style={{
-                    display: 'flex',
+            <div>
+                <div className="App" style={{
+                    margin: '8px',
                 }}>
-                    <Grid />
-                    <Panel />
+                    <div style={{
+                        display: 'flex',
+                    }}>
+                        <Grid />
+                        <Panel />
+                    </div>
+                    <MessageBox />
                 </div>
-                <MessageBox />
+                <div>
+                    <KeyboardInput
+                        keyMaps={{
+                            37: {
+                                func: MazeActions.moveCharacter,
+                                param: [0, -1],
+                            },
+                            38: {
+                                func: MazeActions.moveCharacter,
+                                param: [-1, 0],
+                            },
+                            39: {
+                                func: MazeActions.moveCharacter,
+                                param: [0, 1],
+                            },
+                            40: {
+                                func: MazeActions.moveCharacter,
+                                param: [1, 0],
+                            },
+                        }}
+                    />
+                </div>
             </div>
         );
     }
