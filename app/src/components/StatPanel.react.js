@@ -30,7 +30,7 @@ export class StatPanel extends React.Component {
                     <NumberField number={character.hitPoint} />
                 </div>
                 <div className="panel--stat__groupped">
-                    <NumberField number={3} />
+                    <NumberField number={character.yellowKey} />
                     <NumberField number={3} />
                 </div>
                 <div className="panel--stat__groupped">
