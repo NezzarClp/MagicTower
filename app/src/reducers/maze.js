@@ -100,6 +100,16 @@ function fastForwardSimulateFight(character, monster) {
 }
 
 /**
+ * Check there is enough key to open the doorID
+ * @param  {Object} character
+ * @param  {Object} doorID
+ * @return {boolean}
+ */
+function checkHasKeyToOpenDoor(character, door) {
+    return (character.yellowKey >= 1);
+}
+
+/**
  * Check if the character can enter a cell
  * @param  {Object} newState
  * @param  {Object} cell
@@ -108,15 +118,21 @@ function fastForwardSimulateFight(character, monster) {
 function canCharacterEnterCell(newState, cell) {
     const {
         character,
+        doorsDetails,
         monstersDetails,
     } = newState;
-    const { monsterID } = cell;
+    const {
+        doorID,
+        monsterID
+    } = cell;
 
-    const isSafeToEnter = (monsterID ?
-        (fastForwardSimulateFight(character, monstersDetails[monsterID]) === "CHARACTER") :
-        true);
+    const isSafeToEnter = ((monsterID === null) ? true :
+        (fastForwardSimulateFight(character, monstersDetails[monsterID]) === "CHARACTER"));
 
-    return ((cell.type === "floor") && isSafeToEnter);
+    const canOpenDoor = ((doorID === null) ? true :
+        (checkHasKeyToOpenDoor(character, doorsDetails[doorID])));
+
+    return ((cell.type === "floor") && isSafeToEnter && canOpenDoor);
 }
 
 
@@ -204,7 +220,7 @@ function checkAndUpdateMazeState(newState, newPosition) {
 
     if (doorID !== null) {
         removeDoor(newState, doorID);
-        newState.character.yellowKey--;
+        newState.character.yellowKey = newState.character.yellowKey - 1;
     }
 }
 
