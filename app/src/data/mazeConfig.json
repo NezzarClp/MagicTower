@@ -46,6 +46,11 @@
             "row": 4,
             "column": 2,
             "type": 2
+        },
+        {
+            "row": 5,
+            "column": 2,
+            "type": 2
         }
     ],
 
@@ -65,7 +70,7 @@
             "hitPoint": 80
         }
     },
-    
+
     "doors": [
         {
             "row": 0,

@@ -28,15 +28,6 @@ function max(a, b) {
 }
 
 /**
- * Check if the character can enter a cell
- * @param  {Object} cell
- * @return {boolean}
- */
-function canCharacterEnterCell(cell) {
-    return (cell.type === "floor");
-}
-
-/**
  * Simulate fight of character and monster
  * @param  {Object} character
  * @param  {Object} monster
@@ -72,7 +63,62 @@ function simulateFight(character, monster) {
             currentTurn = "CHARACTER";
         }
     }
+
+    if (character.hitPoint > 0) {
+        return "CHARACTER";
+    } else {
+        return "MONSTER";
+    }
 }
+
+/**
+ * Simulate fight of character and monster without step-to-step simulate
+ * @param  {Object} character
+ * @param  {Object} monster
+ * @return {string} winner    winner of the fight
+ */
+function fastForwardSimulateFight(character, monster) {
+    const characterDamagePerRound = character.attack - monster.defend;
+    const monsterDamagePerRound = monster.attack - character.defend;
+
+    if (characterDamagePerRound <= 0) {
+        return "MONSTER";
+    }
+
+    if (monsterDamagePerRound <= 0) {
+        return "CHARACTER";
+    }
+
+    const numCharacterTurnToKillMonster = Math.ceil(monster.hitPoint / characterDamagePerRound);
+    const numMonsterTurnToKillCharacter = Math.ceil(character.hitPoint / monsterDamagePerRound);
+
+    if (numCharacterTurnToKillMonster <= numMonsterTurnToKillCharacter) {
+        return "CHARACTER";
+    } else {
+        return "MONSTER";
+    }
+}
+
+/**
+ * Check if the character can enter a cell
+ * @param  {Object} newState
+ * @param  {Object} cell
+ * @return {boolean}
+ */
+function canCharacterEnterCell(newState, cell) {
+    const {
+        character,
+        monstersDetails,
+    } = newState;
+    const { monsterID } = cell;
+
+    const isSafeToEnter = (monsterID ?
+        (fastForwardSimulateFight(character, monstersDetails[monsterID]) === "CHARACTER") :
+        true);
+
+    return ((cell.type === "floor") && isSafeToEnter);
+}
+
 
 /**
  * Check if the character can enter a cell defined by x and y
@@ -97,7 +143,7 @@ function checkValidPosition(newState, newPosition) {
         ((column >= 0) && (column < width))
     );
 
-    return (isPositionInsideMaze && canCharacterEnterCell(maze[row][column]));
+    return (isPositionInsideMaze && canCharacterEnterCell(newState, maze[row][column]));
 }
 
 /**
