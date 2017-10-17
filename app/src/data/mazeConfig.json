@@ -68,6 +68,13 @@
             "attack": 40,
             "defend": 12,
             "hitPoint": 80
+        },
+        "3": {
+            "name": "magician",
+            "imgSrc": "magician",
+            "attack": 60,
+            "defend": 0,
+            "hitPoint": 96
         }
     },
 
