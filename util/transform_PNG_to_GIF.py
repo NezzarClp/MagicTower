@@ -1,15 +1,18 @@
 from scipy import misc
 import glob
 import os
+import sys
 from PIL import Image
 
 # Please refer https://chenjiehua.me/python/pil-patch-gif-disposal.html for usage
+
+numToConvert = int(sys.argv[1])
 
 for image_path in glob.glob("./data/*.png"):
     image = misc.imread(image_path)
     
     for i in range(0, 4):
-        image2 = image[64:96, i*32:(i+1)*32, :]
+        image2 = image[numToConvert*32:(numToConvert+1)*32, i*32:(i+1)*32, :]
         strr =  "./temp" + str(i) + ".png"
         misc.imsave(strr, image2)
     
