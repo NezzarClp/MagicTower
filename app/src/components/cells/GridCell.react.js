@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 
 import UIConstants from '../../constants/UIConstants';
 
-import wall from '../../images/wall.png';
-// TODO replace floor.png with real floor
-import floor from '../../images/floor.png';
+import gridImage from '../../images';
 
 function mapStateToProps(state, ownProps) {
     const { row, column } = ownProps;
@@ -58,24 +56,14 @@ export class GridCell extends React.Component {
         };
     }
 
-    _getBackGroundTileSrc() {
-        const { cellType } = this.props;
-        switch (cellType) {
-            case 'wall':
-                return wall;
-            case 'floor':
-                return floor;
-            default:
-                return wall;
-        }
-    }
-
     render() {
+        const { cellType } = this.props;
         const positionStyle = this._getPositionStyle();
+        const src = gridImage[cellType];
 
         return (
             <div className='grid__cell' style={positionStyle}>
-                <img className='grid__cell__img' alt='' src={this._getBackGroundTileSrc()} />
+                <img className='grid__cell__img' alt='' src={src} />
             </div>
         );
     }
