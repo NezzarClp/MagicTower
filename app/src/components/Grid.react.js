@@ -7,8 +7,8 @@ import UIConstants from '../constants/UIConstants';
 
 import CharacterCell from './cells/CharacterCell.react';
 import DoorCell from './cells/DoorCell.react';
-import GridCell from './cells/GridCell.react';
 import MonsterCell from './cells/MonsterCell.react';
+import TileCell from './cells/TileCell.react';
 
 function mapStateToProps(state) {
     return {
@@ -48,29 +48,29 @@ export class Grid extends React.Component {
         monstersDetails: PropTypes.object,
     };
 
-    _getGridCells() {
+    _getTileCells() {
         const {
             numRows,
             numColumns,
         } = this.props;
 
-        const gridCells = [];
+        const tileCells = [];
 
         for (let i = 0; i < numRows; i++) {
             for (let j = 0; j < numColumns; j++) {
-                const gridCell = (
-                    <GridCell
+                const tileCell = (
+                    <TileCell
                         key={`gridCell${i}_${j}`}
                         row={i}
                         column={j}
                     />
                 );
 
-                gridCells.push(gridCell);
+                tileCells.push(tileCell);
             }
         }
 
-        return gridCells;
+        return tileCells;
     }
 
     _getCharacterCells() {
@@ -134,21 +134,19 @@ export class Grid extends React.Component {
         return {
             height: `${numRows * cellWidth}px`,
             width: `${numColumns * cellWidth}px`,
-            position: 'relative',
-            display: 'flex',
         };
     }
 
     render() {
-        const gridCells = this._getGridCells();
         const characterCells = this._getCharacterCells();
         const doorCells = this._getDoorCells();
         const monsterCells = this._getMonsterCells();
+        const tileCells = this._getTileCells();
         const gridStyle = this._getGridStyle();
 
         return (
-            <div style={gridStyle}>
-                {gridCells}
+            <div className='grid' style={gridStyle}>
+                {tileCells}
                 {characterCells}
                 {doorCells}
                 {monsterCells}

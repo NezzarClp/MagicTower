@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-import UIConstants from '../../constants/UIConstants';
+import GridCell from './GridCell.react';
 
 // TODO capture character image
 import character from '../../images/character.png';
@@ -20,44 +20,25 @@ export default class CharacterCell extends React.Component {
         row: PropTypes.number.isRequired,
     };
 
-    _getPositionStyle() {
-        const { row, column } = this.props;
-        const { cellWidth } = UIConstants;
-
-        return {
-            position: 'absolute',
-            top: `${row*cellWidth}px`,
-            left: `${column*cellWidth}px`,
-        };
-    }
-
-    _getCharacterStyle() {
-        return {
-            top: 0,
-            left: 0,
-            width: '40px',
-            height: '40px',
-            'zIndex': 1,
-        };
-    }
-
     _getCharacterSrc() {
         return character;
     }
 
     render() {
-        const positionStyle = this._getPositionStyle();
-        const characterStyle = this._getCharacterStyle();
-
+        const {
+            row, 
+            column,
+        } = this.props;
+        const src = this._getCharacterSrc();
+        const classNames = ['grid__cell__character'];
+        
         return (
-            <div className='grid__cell' style={positionStyle}>
-                <img
-                    alt=''
-                    className='grid__cell__img'
-                    style={characterStyle}
-                    src={this._getCharacterSrc()}
-                />
-            </div>
+            <GridCell 
+                row={row}
+                column={column}
+                src={src}
+                classNames={classNames}
+            />
         );
     }
 }

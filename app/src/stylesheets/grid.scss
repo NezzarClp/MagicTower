@@ -1,8 +1,24 @@
 $cellWidth: 40px;
 
+.grid {
+    position: 'relative';
+    display: 'flex';
+}
+
 .grid__cell {
+    position: absolute;
     &__img {
+        top: 0;
+        left: 0;
         width: $cellWidth;
         height: $cellWidth;
+    }
+    
+    &__monster, &__door {
+        z-index: 2;
+    }
+    
+    &__character {
+        z-index: 1;
     }
 }

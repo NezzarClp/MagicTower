@@ -1,4 +1,5 @@
-import yellow_door from './yellow_door.gif';
-export default {
+const yellow_door = require('./yellow_door.gif');
+
+module.exports = {
     yellow_door,
 };
