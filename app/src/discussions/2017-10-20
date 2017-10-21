@@ -1,6 +1,4 @@
-Objective done: Started refactoring cells, and added animation support when character opens a door.
-
-Probably need to refactor doorsCells so that each cell fetch info on it's own.
+Objective done: Refactoring GridCell how it judges images to display.
 
 TODO:
   High priority
@@ -11,7 +9,6 @@ TODO:
     Implement battle mechanics
 
   Medium priority
-    Refactor cells to use a common cell as upper class
     Refactor doorsDetails from array to object
     Update message box
     Create character png with transparent background
