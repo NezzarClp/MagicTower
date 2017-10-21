@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import UIConstants from '../../constants/UIConstants';
 // TODO use dynamic src prop to render door
-import door from '../../images/doors/yellow_door.png';
+import door from '../../images/openDoors/yellow_door.gif';
+import door2 from '../../images/doors/yellow_door.png';
 
 export default class DoorCell extends React.Component {
 
@@ -17,6 +18,15 @@ export default class DoorCell extends React.Component {
          * The 0-based y-coordinate of the cell, from top to bottom
          */
         row: PropTypes.number.isRequired,
+        
+        /**
+         * If the door is being destroyed or not
+         */
+        destroyed: PropTypes.bool,
+    };
+    
+    static defaultProps = {
+        destroyed: false,
     };
 
     _getPositionStyle() {
@@ -40,7 +50,11 @@ export default class DoorCell extends React.Component {
     }
 
     _getDoorSrc() {
-        return door;
+        if (this.props.destroyed) {
+            return door;
+        }
+        
+        return door2;
     }
 
     render() {

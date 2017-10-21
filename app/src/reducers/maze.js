@@ -6,6 +6,7 @@ const initialState = {
     doorsDetails: {},
     monstersDetails: {},
     tilesDetails: [],
+    destroyedDoors: [],
 
     character: {
         row: 0,
@@ -181,9 +182,10 @@ function removeMonster(newState, monsterID) {
  */
 function removeDoor(newState, doorID) {
     const { row, column } = newState.doorsDetails[doorID];
-
+    
+    newState.destroyedDoors.push(doorID);
     newState.tilesDetails[row][column].doorID = null;
-    delete newState.doorsDetails[doorID];
+    newState.doorsDetails[doorID].destroyed = true;
 }
 
 /**

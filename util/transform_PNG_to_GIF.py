@@ -6,15 +6,28 @@ from PIL import Image
 
 # Please refer https://chenjiehua.me/python/pil-patch-gif-disposal.html for usage
 
-numToConvert = int(sys.argv[1])
+numRow = int(sys.argv[1])
+numColumn = int(sys.argv[2])
+
+if sys.argv[3] == 'column':
+    isColumn = 1
+else:
+    isColumn = 0
+    
+outputPath = sys.argv[4];
 
 for image_path in glob.glob("./data/*.png"):
     image = misc.imread(image_path)
     
     for i in range(0, 4):
-        image2 = image[numToConvert*32:(numToConvert+1)*32, i*32:(i+1)*32, :]
+        image2 = image[numRow*32:(numRow+1)*32,numColumn*32:(numColumn+1)*32,:]
         strr =  "./temp" + str(i) + ".png"
         misc.imsave(strr, image2)
+        
+        if (isColumn == 1):
+            numRow = numRow + 1
+        else:
+            numColumn = numColumn + 1
     
     images = [];
     strr =  "./temp" + str(0) + ".png"
@@ -27,4 +40,5 @@ for image_path in glob.glob("./data/*.png"):
         images.append(Image.alpha_composite(mask, image))
     
     img = images[0]
-    img.save("./output.gif", duration=125, save_all=True, append_images=images[1:], loop=0, transparency=0, disposal=2)
+    images.append(Image.new("RGBA", image.size, (0, 0, 0, 255)));
+    img.save(outputPath, duration=100, save_all=True, append_images=images[1:], transparency=0, disposal=2)

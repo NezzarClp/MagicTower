@@ -90,12 +90,13 @@ export class Grid extends React.Component {
         const doorCells = [];
 
         for (let doorID in doorsDetails) {
-            const { row, column } = doorsDetails[doorID];
+            const { row, column, destroyed } = doorsDetails[doorID];
             const doorCell = (
                 <DoorCell
                     key={`doorCell${row}_${column}`}
                     row={row}
                     column={column}
+                    destroyed={destroyed}
                 />
             );
 

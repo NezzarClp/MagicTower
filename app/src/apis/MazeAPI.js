@@ -71,6 +71,7 @@ export default {
 
                 doorsDetails[i] = {
                     ...door,
+                    destroyed: false,
                 };
 
                 tilesDetails[row][column].doorID = i;
