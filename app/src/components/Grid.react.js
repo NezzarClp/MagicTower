@@ -9,6 +9,7 @@ import UIConstants from '../constants/UIConstants';
 import CharacterCell from './cells/CharacterCell.react';
 import DoorCell from './cells/DoorCell.react';
 import MonsterCell from './cells/MonsterCell.react';
+import StairCell from './cells/StairCell.react';
 import TileCell from './cells/TileCell.react';
 
 function mapStateToProps(state) {
@@ -24,6 +25,9 @@ function mapStateToProps(state) {
         doorsDetails: _.pickBy(state.maze.doorsDetails, (door) => (
             door.level === currentLevel    
         )),
+        stairsDetails: _.pickBy(state.maze.stairsDetails, (stair) => (
+            stair.level === currentLevel    
+        ))
     };
 }
 
@@ -133,6 +137,27 @@ export class Grid extends React.Component {
 
         return monsterCells;
     }
+    
+    _getStairCells() {
+        const { stairsDetails } = this.props;
+        const stairCells = [];
+
+        for (let stairID in stairsDetails) {
+            const { row, column, imgSrc } = stairsDetails[stairID];
+            const stairCell = (
+                <StairCell
+                    key={`stairCell${row}_${column}`}
+                    row={row}
+                    column={column}
+                    src={imgSrc}
+                />
+            );
+
+            stairCells.push(stairCell);
+        }
+
+        return stairCells;
+    }
 
     _getGridStyle() {
         const { numRows, numColumns } = this.props;
@@ -148,14 +173,16 @@ export class Grid extends React.Component {
         const characterCells = this._getCharacterCells();
         const doorCells = this._getDoorCells();
         const monsterCells = this._getMonsterCells();
+        const stairCells = this._getStairCells();
         const tileCells = this._getTileCells();
         const gridStyle = this._getGridStyle();
 
         return (
             <div className='grid' style={gridStyle}>
-                {tileCells}
                 {characterCells}
                 {doorCells}
+                {stairCells}
+                {tileCells}
                 {monsterCells}
             </div>
         );

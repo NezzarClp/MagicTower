@@ -14,7 +14,7 @@ $cellWidth: 40px;
         height: $cellWidth;
     }
     
-    &__monster, &__door {
+    &__monster, &__door, &__stair {
         z-index: 2;
     }
     

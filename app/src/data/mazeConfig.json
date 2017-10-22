@@ -191,5 +191,21 @@
             "name": "yellow_door",
             "imgSrc": "yellow_door"
         }
+    },
+    
+    "stairs": [
+        {
+            "level": 0,
+            "row": 1,
+            "column": 1,
+            "type": 1
+        }    
+    ],
+    
+    "mapStairTypeToDetails": {
+        "1": {
+            "name": "up_stair",
+            "imgSrc": "up_stair"
+        }
     }
 }

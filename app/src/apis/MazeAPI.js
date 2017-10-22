@@ -17,11 +17,14 @@ export default {
                 doors,
                 mazeTiles,
                 mapMonsterTypeToDetails,
+                mapStairTypeToDetails,
                 mapTilesIDToString,
                 monsters,
+                stairs,
             } = mazeConfig;
             const doorsDetails = {};
             const monstersDetails = {};
+            const stairsDetails = {};
             const tilesDetails = [];
 
             const numLevels = mazeTiles.length;
@@ -51,6 +54,7 @@ export default {
                         mazeTilesRowDetails.push({
                             doorID: null,
                             monsterID: null,
+                            stairID: null,
                             type: mapTilesIDToString[mazeTileType],
                         });
                     }
@@ -65,11 +69,11 @@ export default {
 
             for (let i = 0; i < numMonsters; i++) {
                 const monster = monsters[i];
-                const { level, row, column } = monster;
+                const { level, row, column, type } = monster;
 
                 monstersDetails[i] = {
                     ...monster,
-                    ...mapMonsterTypeToDetails[monster.type],
+                    ...mapMonsterTypeToDetails[type],
                 };
 
                 try {
@@ -99,12 +103,32 @@ export default {
                 }
             }
 
+            const numStairs = stairs.length;
+
+            for (let i = 0; i < numStairs; i++) {
+                const stair = stairs[i];
+                const { level, row, column, type } = stair;
+
+                stairsDetails[i] = {
+                    ...stair,
+                    ...mapStairTypeToDetails[type],
+                };
+
+                try {
+                    tilesDetails[level][row][column].stairID = i;
+                } catch (err) {
+                    console.log('%cWarning', 'color: red', ': Failed to put stair at level', level, 'and coordinates (', row, ',', column, ')');   
+                    console.log('(ID:', i,')');
+                }
+            }
+
             resolve({
                 gridLevel: numLevels,
                 gridHeight,
                 gridWidth,
                 doorsDetails,
                 monstersDetails,
+                stairsDetails,
                 tilesDetails,
             });
         });

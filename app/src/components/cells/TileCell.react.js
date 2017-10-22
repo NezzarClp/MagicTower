@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import GridCell from './GridCell.react';
-
 import gridImage from '../../images';
+
+import GridCell from './GridCell.react';
 
 function mapStateToProps(state, ownProps) {
     const { row, column } = ownProps;

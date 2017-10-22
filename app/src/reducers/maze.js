@@ -5,6 +5,7 @@ const initialState = {
     gridWidth: 0,
     doorsDetails: {},
     monstersDetails: {},
+    stairsDetails: {},
     tilesDetails: [],
     destroyedDoors: [],
 
