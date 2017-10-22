@@ -192,6 +192,21 @@ function removeDoor(newState, doorID) {
 }
 
 /**
+ * Update positions of character as it walks to a cell
+ * @param {Object} newState
+ * @param {number} stairID
+ */
+function updateCharacterPositionByStair(newState, stairID) {
+    const stair = newState.stairsDetails[stairID];
+    const targetPosition = stair.target;
+    
+    newState.character = {
+        ...newState.character,
+        ...targetPosition
+    };
+}
+
+/**
  * Update the state according to the newPosition
  * @param    {Object} newState
  * @param    {Object} newPosition the expected new position of the character
@@ -212,7 +227,8 @@ function checkAndUpdateMazeState(newState, newPosition) {
     const cellDetails = maze[level][row][column];
     const {
         doorID,
-        monsterID
+        monsterID,
+        stairID,
     } = cellDetails;
 
     if (monsterID !== null) {
@@ -227,6 +243,10 @@ function checkAndUpdateMazeState(newState, newPosition) {
     if (doorID !== null) {
         removeDoor(newState, doorID);
         newState.character.yellowKey = newState.character.yellowKey - 1;
+    }
+    
+    if (stairID !== null) {
+        updateCharacterPositionByStair(newState, stairID);
     }
 }
 
