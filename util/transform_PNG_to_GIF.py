@@ -40,5 +40,5 @@ for image_path in glob.glob("./data/*.png"):
         images.append(Image.alpha_composite(mask, image))
     
     img = images[0]
-    images.append(Image.new("RGBA", image.size, (0, 0, 0, 255)));
+    images.append(img)
     img.save(outputPath, duration=100, save_all=True, append_images=images[1:], transparency=0, disposal=2)
