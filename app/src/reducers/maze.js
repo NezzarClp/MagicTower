@@ -13,6 +13,7 @@ const initialState = {
         level: 0,
         row: 0,
         column: 0,
+        direction: 'normal',
     }
 }
 

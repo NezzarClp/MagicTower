@@ -86,12 +86,13 @@ export class Grid extends React.Component {
 
     _getCharacterCells() {
         const { character } = this.props;
-        const { row, column } = character;
+        const { row, column, direction } = character;
 
         return (
             <CharacterCell
                 row={row}
                 column={column}
+                direction={direction}
             />
         )
     }

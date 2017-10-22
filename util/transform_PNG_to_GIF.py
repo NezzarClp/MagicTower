@@ -20,7 +20,7 @@ for image_path in glob.glob("./data/*.png"):
     image = misc.imread(image_path)
     
     for i in range(0, 4):
-        image2 = image[numRow*32:(numRow+1)*32,numColumn*32:(numColumn+1)*32,:]
+        image2 = image[numRow*33:(numRow+1)*33,numColumn*32:(numColumn+1)*32,:]
         strr =  "./temp" + str(i) + ".png"
         misc.imsave(strr, image2)
         

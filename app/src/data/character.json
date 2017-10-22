@@ -2,8 +2,9 @@
     "level": 0,
     "row": 11,
     "column": 6,
+    "direction": "up",
     "attack": 30,
     "defend": 10,
     "hitPoint": 300,
-    "yellowKey": 6 
+    "yellowKey": 6
 }

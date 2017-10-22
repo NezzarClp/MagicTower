@@ -5,6 +5,7 @@ import GridCell from './GridCell.react';
 
 // TODO capture character image
 import character from '../../images/character.png';
+import movingCharacters from '../../images/movingCharacters';
 
 export default class CharacterCell extends React.Component {
 
@@ -18,10 +19,27 @@ export default class CharacterCell extends React.Component {
          * The 0-based y-coordinate of the cell, from top to bottom
          */
         row: PropTypes.number.isRequired,
+        
+        /**
+         * The direction of the character facing
+         */
+        direction: PropTypes.string,
+    };
+    
+    static defaultProps = {
+        direction: 'normal',
     };
 
     _getCharacterSrc() {
-        return character;
+        const { direction } = this.props;
+        
+        console.log(direction);
+        
+        if (direction === 'normal') {
+            return character;
+        }
+        
+        return movingCharacters[`character_${direction}`];
     }
 
     render() {
