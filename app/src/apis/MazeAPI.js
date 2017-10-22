@@ -20,64 +20,87 @@ export default {
                 mapTilesIDToString,
                 monsters,
             } = mazeConfig;
-            const numRows = mazeTiles.length;
             const doorsDetails = {};
             const monstersDetails = {};
             const tilesDetails = [];
 
-            const gridHeight = numRows;
+            const numLevels = mazeTiles.length;
+            let gridHeight = 0;
             let gridWidth = 0;
 
-            for (let i = 0; i < numRows; i++) {
-                const mazeTileRow = mazeTiles[i];
-                const numTiles = mazeTileRow.length;
-                const mazeTilesRowDetails = [];
-
-                if (numTiles > gridWidth) {
-                    gridWidth = numTiles;
+            for (let i = 0; i < numLevels; i++) {
+                const mazeTilesInLevel = mazeTiles[i];
+                const numRows = mazeTilesInLevel.length;
+                const rowsDetails = [];
+                
+                if (numRows > gridHeight) {
+                    gridHeight = numRows;
                 }
-
-                for (let j = 0; j < numTiles; j++) {
-                    const mazeTileType = mazeTileRow[j];
-                    mazeTilesRowDetails.push({
-                        doorID: null,
-                        monsterID: null,
-                        type: mapTilesIDToString[mazeTileType],
-                    });
+                
+                for (let j = 0; j < numRows; j++) {
+                    const mazeTileRow = mazeTilesInLevel[j];
+                    const numTiles = mazeTileRow.length;
+                    const mazeTilesRowDetails = [];
+    
+                    if (numTiles > gridWidth) {
+                        gridWidth = numTiles;
+                    }
+    
+                    for (let k = 0; k < numTiles; k++) {
+                        const mazeTileType = mazeTileRow[k];
+                        mazeTilesRowDetails.push({
+                            doorID: null,
+                            monsterID: null,
+                            type: mapTilesIDToString[mazeTileType],
+                        });
+                    }
+    
+                    rowsDetails.push(mazeTilesRowDetails);
                 }
-
-                tilesDetails.push(mazeTilesRowDetails);
+                
+                tilesDetails.push(rowsDetails);
             }
 
             const numMonsters = monsters.length;
 
             for (let i = 0; i < numMonsters; i++) {
                 const monster = monsters[i];
-                const { row, column } = monster;
+                const { level, row, column } = monster;
 
                 monstersDetails[i] = {
                     ...monster,
                     ...mapMonsterTypeToDetails[monster.type],
                 };
 
-                tilesDetails[row][column].monsterID = i;
+                try {
+                    tilesDetails[level][row][column].monsterID = i;
+                } catch (err) {
+                    console.log('%cWarning', 'color: red', ': Failed to put monster at level', level, 'and coordinates (', row, ',', column, ')');   
+                    console.log('(ID:', i,')');
+                }
             }
 
             const numDoors = doors.length;
 
             for (let i = 0; i < numDoors; i++) {
                 const door = doors[i];
-                const { row, column } = door;
+                const { level, row, column } = door;
 
                 doorsDetails[i] = {
                     ...door,
                     destroyed: false,
                 };
 
-                tilesDetails[row][column].doorID = i;
+                try {
+                    tilesDetails[level][row][column].doorID = i;
+                } catch (err) {
+                    console.log('%cWarning', 'color: red', ': Failed to put door at level', level, 'and coordinates (', row, ',', column, ')');   
+                    console.log('(ID:', i,')');
+                }
             }
 
             resolve({
+                gridLevel: numLevels,
                 gridHeight,
                 gridWidth,
                 doorsDetails,

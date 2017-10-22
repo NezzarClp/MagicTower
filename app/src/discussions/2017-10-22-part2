@@ -1,0 +1,26 @@
+Objective done: Refactor maze reducer: Add levels controls
+
+It's interesting that, if missing initial values, the app won't work at all.
+Hardcoding initial values are of course bad practices, so we should put a loader page when the data is loading.
+But seems that's later work
+
+TODO:
+  High priority
+    Refactor number field
+    Create character image instead of question mark
+    Design the control panel, currently we should support four buttons, probably on the right?
+    Implement battle mechanics
+    Investigate ES6 import issues. Currently, if one door is destroyed, all destroyed doors will suddenly animate again.
+
+  Medium priority
+    Tidy up codes
+    Refactor cells to use a common cell as upper class
+    Update message box
+    Move all constants to constant files
+    Move more types of tiles to codebase
+    Add usage for utils
+
+  Low priority
+    Add loader page when the data is loading
+    Prepare to build minimized version of the app
+    Routing investigation

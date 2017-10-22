@@ -9,6 +9,7 @@ const initialState = {
     destroyedDoors: [],
 
     character: {
+        level: 0,
         row: 0,
         column: 0,
     }
@@ -152,6 +153,7 @@ function checkValidPosition(newState, newPosition) {
         tilesDetails: maze,
     } = newState;
     const {
+        level,
         row,
         column,
     } = newPosition;
@@ -160,7 +162,7 @@ function checkValidPosition(newState, newPosition) {
         ((column >= 0) && (column < width))
     );
 
-    return (isPositionInsideMaze && canCharacterEnterCell(newState, maze[row][column]));
+    return (isPositionInsideMaze && canCharacterEnterCell(newState, maze[level][row][column]));
 }
 
 /**
@@ -169,9 +171,9 @@ function checkValidPosition(newState, newPosition) {
  * @param {number} monsterID
  */
 function removeMonster(newState, monsterID) {
-    const { row, column } = newState.monstersDetails[monsterID];
+    const { level, row, column } = newState.monstersDetails[monsterID];
 
-    newState.tilesDetails[row][column].monsterID = null;
+    newState.tilesDetails[level][row][column].monsterID = null;
     delete newState.monstersDetails[monsterID];
 }
 
@@ -181,10 +183,10 @@ function removeMonster(newState, monsterID) {
  * @param {number} doorID
  */
 function removeDoor(newState, doorID) {
-    const { row, column } = newState.doorsDetails[doorID];
+    const { level, row, column } = newState.doorsDetails[doorID];
     
     newState.destroyedDoors.push(doorID);
-    newState.tilesDetails[row][column].doorID = null;
+    newState.tilesDetails[level][row][column].doorID = null;
     newState.doorsDetails[doorID].destroyed = true;
 }
 
@@ -202,10 +204,11 @@ function checkAndUpdateMazeState(newState, newPosition) {
         monstersDetails,
     } = newState;
     const {
+        level,
         row,
         column,
     } = newPosition;
-    const cellDetails = maze[row][column];
+    const cellDetails = maze[level][row][column];
     const {
         doorID,
         monsterID
@@ -246,16 +249,16 @@ const maze = (state = initialState, action) => {
         case 'MOVE_CHARACTER': {
             const { differenceRow, differenceColumn } = action.payload;
             const { character } = state;
-            let { row, column } = character;
+            let { level, row, column } = character;
 
             let newState = _.cloneDeep(state);
             row += differenceRow;
             column += differenceColumn;
 
-            if (checkValidPosition(newState, { row, column })) {
+            if (checkValidPosition(newState, { level, row, column })) {
                 newState.character.row = row;
                 newState.character.column = column;
-                checkAndUpdateMazeState(newState, { row, column });
+                checkAndUpdateMazeState(newState, { level, row, column });
             }
 
             return newState;

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { connect } from 'react-redux';
 
@@ -11,12 +12,18 @@ import MonsterCell from './cells/MonsterCell.react';
 import TileCell from './cells/TileCell.react';
 
 function mapStateToProps(state) {
+    const currentLevel = state.maze.character.level;
+    
     return {
         numRows: state.maze.gridHeight,
         numColumns: state.maze.gridWidth,
         character: state.maze.character,
-        monstersDetails: state.maze.monstersDetails,
-        doorsDetails: state.maze.doorsDetails,
+        monstersDetails: _.pickBy(state.maze.monstersDetails, (monster) => (
+            monster.level === currentLevel    
+        )),
+        doorsDetails: _.pickBy(state.maze.doorsDetails, (door) => (
+            door.level === currentLevel    
+        )),
     };
 }
 

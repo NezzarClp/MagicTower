@@ -9,9 +9,10 @@ import gridImage from '../../images';
 
 function mapStateToProps(state, ownProps) {
     const { row, column } = ownProps;
-
+    const { level } = state.maze.character;
+    
     return {
-        cellType: state.maze.tilesDetails[row][column].type,
+        cellType: state.maze.tilesDetails[level][row][column].type,
     }
 }
 
