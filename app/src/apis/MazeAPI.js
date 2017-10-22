@@ -5,132 +5,165 @@ import Promise from 'bluebird';
 
 import mazeConfig from '../data/mazeConfig.json';
 
-export default {
+const {
+    numLevels,
+    mapTilesIDToString,
+    mapMonsterTypeToDetails,
+    mapDoorTypeToDetails,
+    mapStairTypeToDetails,
+} = mazeConfig;
 
+export default {
     /**
-     * Read the tiles of the maze from source
-     * @return {Promise} Promise that returns when the tiles are read
+     * Reads the tiles of the maze on a single level
+     * @param {number} currentLevel The specified level
+     * @return {Promise}            Promise that resolves the state of the level
      */
-    readMazeTiles() {
+    _readLevel(currentLevel) {
         return new Promise((resolve, reject) => {
-            const {
-                doors,
-                mazeTiles,
-                mapMonsterTypeToDetails,
-                mapStairTypeToDetails,
-                mapTilesIDToString,
-                monsters,
-                stairs,
-            } = mazeConfig;
             const doorsDetails = {};
             const monstersDetails = {};
             const stairsDetails = {};
             const tilesDetails = [];
+            const destroyedDoors = [];
 
-            const numLevels = mazeTiles.length;
-            let gridHeight = 0;
+            let totalDoors = 0;
+            let totalMonsters = 0;
+            let totalStairs = 0;
+
+            const levelData = require(`../data/level_${currentLevel}.json`);
+
+            const {
+                mazeTiles,
+                monsters,
+                doors,
+                stairs,
+            } = levelData;
+
+            const numRows = mazeTiles.length;
+
+            let gridHeight = numRows;
             let gridWidth = 0;
 
-            for (let i = 0; i < numLevels; i++) {
-                const mazeTilesInLevel = mazeTiles[i];
-                const numRows = mazeTilesInLevel.length;
-                const rowsDetails = [];
-                
-                if (numRows > gridHeight) {
-                    gridHeight = numRows;
+            for (let i = 0; i < numRows; i++) {
+                const mazeTileRow = mazeTiles[i];
+                const numTiles = mazeTileRow.length;
+                const mazeTilesRowDetails = [];
+
+                gridWidth = Math.max(gridWidth, numTiles);
+
+                for (let j = 0; j < numTiles; j++) {
+                    const mazeTileType = mazeTileRow[j];
+                    mazeTilesRowDetails.push({
+                        doorID: null,
+                        monsterID: null,
+                        stairID: null,
+                        type: mapTilesIDToString[mazeTileType],
+                    });
                 }
-                
-                for (let j = 0; j < numRows; j++) {
-                    const mazeTileRow = mazeTilesInLevel[j];
-                    const numTiles = mazeTileRow.length;
-                    const mazeTilesRowDetails = [];
-    
-                    if (numTiles > gridWidth) {
-                        gridWidth = numTiles;
-                    }
-    
-                    for (let k = 0; k < numTiles; k++) {
-                        const mazeTileType = mazeTileRow[k];
-                        mazeTilesRowDetails.push({
-                            doorID: null,
-                            monsterID: null,
-                            stairID: null,
-                            type: mapTilesIDToString[mazeTileType],
-                        });
-                    }
-    
-                    rowsDetails.push(mazeTilesRowDetails);
-                }
-                
-                tilesDetails.push(rowsDetails);
+
+                tilesDetails.push(mazeTilesRowDetails);
             }
 
             const numMonsters = monsters.length;
 
             for (let i = 0; i < numMonsters; i++) {
                 const monster = monsters[i];
-                const { level, row, column, type } = monster;
+                const { row, column, type } = monster;
 
-                monstersDetails[i] = {
+                monstersDetails[totalMonsters] = {
+                    level: currentLevel,
                     ...monster,
                     ...mapMonsterTypeToDetails[type],
                 };
 
-                try {
-                    tilesDetails[level][row][column].monsterID = i;
-                } catch (err) {
-                    console.log('%cWarning', 'color: red', ': Failed to put monster at level', level, 'and coordinates (', row, ',', column, ')');   
-                    console.log('(ID:', i,')');
-                }
+                tilesDetails[row][column].monsterID = totalMonsters;
+
+                totalMonsters = totalMonsters + 1;
             }
 
             const numDoors = doors.length;
 
             for (let i = 0; i < numDoors; i++) {
                 const door = doors[i];
-                const { level, row, column } = door;
+                const { row, column, type } = door;
 
-                doorsDetails[i] = {
+                doorsDetails[totalDoors] = {
+                    level: currentLevel,
                     ...door,
+                    ...mapDoorTypeToDetails[type],
                     destroyed: false,
                 };
 
-                try {
-                    tilesDetails[level][row][column].doorID = i;
-                } catch (err) {
-                    console.log('%cWarning', 'color: red', ': Failed to put door at level', level, 'and coordinates (', row, ',', column, ')');   
-                    console.log('(ID:', i,')');
-                }
+                tilesDetails[row][column].doorID = totalDoors;
+
+                totalDoors = totalDoors + 1;
             }
 
             const numStairs = stairs.length;
 
             for (let i = 0; i < numStairs; i++) {
                 const stair = stairs[i];
-                const { level, row, column, type } = stair;
+                const { row, column, type } = stair;
 
-                stairsDetails[i] = {
+                stairsDetails[totalStairs] = {
+                    level: currentLevel,
                     ...stair,
                     ...mapStairTypeToDetails[type],
                 };
 
-                try {
-                    tilesDetails[level][row][column].stairID = i;
-                } catch (err) {
-                    console.log('%cWarning', 'color: red', ': Failed to put stair at level', level, 'and coordinates (', row, ',', column, ')');   
-                    console.log('(ID:', i,')');
-                }
+                tilesDetails[row][column].stairID = totalStairs;
+
+                totalStairs = totalStairs + 1;
             }
 
             resolve({
-                gridLevel: numLevels,
                 gridHeight,
                 gridWidth,
                 doorsDetails,
                 monstersDetails,
                 stairsDetails,
                 tilesDetails,
-            });
+                destroyedDoors,
+            })
+        });
+    },
+
+    /**
+     * Reads the tiles of the maze from source
+     * @return {Promise} Promise that returns when the tiles are read
+     */
+    readMazeTiles() {
+        return new Promise((resolve, reject) => {
+            const maze = {
+                gridLevel: numLevels,
+                gridHeight: 0,
+                gridWidth: 0,
+                doorsDetails: [],
+                monstersDetails: [],
+                stairsDetails: [],
+                tilesDetails: [],
+                destroyedDoors: [],
+            }
+
+            for (let i = 0; i < numLevels; i++) {
+                this._readLevel(i).then((data) => {
+                    const {
+                       gridHeight: levelGridHeight,
+                       gridWidth: levelGridWidth,
+                       ...details,
+                    } = data;
+
+                    maze.gridHeight = Math.max(maze.gridHeight, levelGridHeight);
+                    maze.gridWidth = Math.max(maze.gridWidth, levelGridWidth);
+
+                    Object.keys(details).forEach((key) => {
+                        maze[key].push(details[key]);
+                    });
+                });
+            }
+
+            resolve(maze);
         });
     }
 

@@ -1,6 +1,6 @@
 export default {
     /**
-     * Action creator to initialze maze reducer by character data object
+     * Action creator to initialize maze reducer by character data object
      * @param  {Object} character
      * @return {Object} action object
      */
@@ -14,7 +14,7 @@ export default {
     },
 
     /**
-     * Action creator to initialze maze reducer by map details object
+     * Action creator to initialize maze reducer by map details object
      * @param    {Object} mapDetails
      * @property {number} gridHeight      number of rows of the grid
      * @property {number} gridWidth       number of columns of the grid
@@ -23,7 +23,7 @@ export default {
      * @property {Array}  tilesDetails    list of tiles details
      * @return   {Object} action Object
      */
-    initialzeMap(mapDetails) {
+    initializeMap(mapDetails) {
         return {
             type: 'INITIALIZE_MAP',
             payload: {

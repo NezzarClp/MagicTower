@@ -18,8 +18,8 @@ function mapDispatchToProps(dispatch) {
         initializeCharacter: (character) => {
             dispatch(MazeActions.initializeCharacter(character));
         },
-        initialzeMap: (mazeDetails) => {
-            dispatch(MazeActions.initialzeMap(mazeDetails));
+        initializeMap: (mazeDetails) => {
+            dispatch(MazeActions.initializeMap(mazeDetails));
         },
     }
 }
@@ -35,17 +35,17 @@ export class App extends React.Component {
         /**
          * Function to be called when map tiles are ready
          */
-        initialzeMap: PropTypes.func,
+        initializeMap: PropTypes.func,
     }
 
     _initializeApp() {
         const {
             initializeCharacter,
-            initialzeMap,
+            initializeMap,
         } = this.props;
         MazeAPI.readMazeTiles()
             .then((mazeDetails) => {
-                initialzeMap(mazeDetails);
+                initializeMap(mazeDetails);
             });
         CharacterAPI.readCharacter()
             .then((character) => {

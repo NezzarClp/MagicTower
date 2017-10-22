@@ -3,9 +3,9 @@ import _ from 'lodash';
 const initialState = {
     gridHeight: 0,
     gridWidth: 0,
-    doorsDetails: {},
-    monstersDetails: {},
-    stairsDetails: {},
+    doorsDetails: [],
+    monstersDetails: [],
+    stairsDetails: [],
     tilesDetails: [],
     destroyedDoors: [],
 
@@ -115,10 +115,11 @@ function checkHasKeyToOpenDoor(character, door) {
 /**
  * Check if the character can enter a cell
  * @param  {Object} newState
+ * @param  {number} level
  * @param  {Object} cell
  * @return {boolean}
  */
-function canCharacterEnterCell(newState, cell) {
+function canCharacterEnterCell(newState, level, cell) {
     const {
         character,
         doorsDetails,
@@ -130,14 +131,13 @@ function canCharacterEnterCell(newState, cell) {
     } = cell;
 
     const isSafeToEnter = ((monsterID === null) ? true :
-        (fastForwardSimulateFight(character, monstersDetails[monsterID]) === "CHARACTER"));
+        (fastForwardSimulateFight(character, monstersDetails[level][monsterID]) === "CHARACTER"));
 
     const canOpenDoor = ((doorID === null) ? true :
-        (checkHasKeyToOpenDoor(character, doorsDetails[doorID])));
+        (checkHasKeyToOpenDoor(character, doorsDetails[level][doorID])));
 
     return ((cell.type === "floor") && isSafeToEnter && canOpenDoor);
 }
-
 
 /**
  * Check if the character can enter a cell defined by x and y
@@ -163,43 +163,46 @@ function checkValidPosition(newState, newPosition) {
         ((column >= 0) && (column < width))
     );
 
-    return (isPositionInsideMaze && canCharacterEnterCell(newState, maze[level][row][column]));
+    return (isPositionInsideMaze && canCharacterEnterCell(newState, level, maze[level][row][column]));
 }
 
 /**
  * Remove a monster on monstersDetails
  * @param {Object} newState
+ * @param {number} level
  * @param {number} monsterID
  */
-function removeMonster(newState, monsterID) {
-    const { level, row, column } = newState.monstersDetails[monsterID];
+function removeMonster(newState, level, monsterID) {
+    const { row, column } = newState.monstersDetails[level][monsterID];
 
     newState.tilesDetails[level][row][column].monsterID = null;
-    delete newState.monstersDetails[monsterID];
+    delete newState.monstersDetails[level][monsterID];
 }
 
 /**
  * Remove a door on doorsDetails
  * @param {Object} newState
+ * @param {number} level
  * @param {number} doorID
  */
-function removeDoor(newState, doorID) {
-    const { level, row, column } = newState.doorsDetails[doorID];
-    
-    newState.destroyedDoors.push(doorID);
+function removeDoor(newState, level, doorID) {
+    const { row, column } = newState.doorsDetails[level][doorID];
+
+    newState.destroyedDoors[level].push(doorID);
     newState.tilesDetails[level][row][column].doorID = null;
-    newState.doorsDetails[doorID].destroyed = true;
+    newState.doorsDetails[level][doorID].destroyed = true;
 }
 
 /**
  * Update positions of character as it walks to a cell
  * @param {Object} newState
+ * @param {number} level
  * @param {number} stairID
  */
-function updateCharacterPositionByStair(newState, stairID) {
-    const stair = newState.stairsDetails[stairID];
+function updateCharacterPositionByStair(newState, level, stairID) {
+    const stair = newState.stairsDetails[level][stairID];
     const targetPosition = stair.target;
-    
+
     newState.character = {
         ...newState.character,
         ...targetPosition
@@ -232,21 +235,21 @@ function checkAndUpdateMazeState(newState, newPosition) {
     } = cellDetails;
 
     if (monsterID !== null) {
-        const monster = monstersDetails[monsterID];
+        const monster = monstersDetails[level][monsterID];
         const newCharacter = _.cloneDeep(character);
         const newMonster = _.cloneDeep(monster);
         simulateFight(newCharacter, newMonster);
         newState.character = newCharacter;
-        removeMonster(newState, monsterID);
+        removeMonster(newState, level, monsterID);
     }
 
     if (doorID !== null) {
-        removeDoor(newState, doorID);
+        removeDoor(newState, level, doorID);
         newState.character.yellowKey = newState.character.yellowKey - 1;
     }
-    
+
     if (stairID !== null) {
-        updateCharacterPositionByStair(newState, stairID);
+        updateCharacterPositionByStair(newState, level, stairID);
     }
 }
 
