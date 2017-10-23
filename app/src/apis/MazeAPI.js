@@ -72,7 +72,6 @@ export default {
                 const { row, column, type } = monster;
 
                 monstersDetails[totalMonsters] = {
-                    level: currentLevel,
                     ...monster,
                     ...mapMonsterTypeToDetails[type],
                 };
@@ -89,7 +88,6 @@ export default {
                 const { row, column, type } = door;
 
                 doorsDetails[totalDoors] = {
-                    level: currentLevel,
                     ...door,
                     ...mapDoorTypeToDetails[type],
                     destroyed: false,
@@ -107,7 +105,6 @@ export default {
                 const { row, column, type } = stair;
 
                 stairsDetails[totalStairs] = {
-                    level: currentLevel,
                     ...stair,
                     ...mapStairTypeToDetails[type],
                 };

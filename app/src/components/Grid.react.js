@@ -10,6 +10,7 @@ import DoorCell from './cells/DoorCell.react';
 import MonsterCell from './cells/MonsterCell.react';
 import StairCell from './cells/StairCell.react';
 import TileCell from './cells/TileCell.react';
+import BattleDialog from './BattleDialog.react';
 
 function mapStateToProps(state) {
     const currentLevel = state.maze.character.level;
@@ -182,6 +183,7 @@ export class Grid extends React.Component {
                 {stairCells}
                 {tileCells}
                 {monsterCells}
+                <BattleDialog />
             </div>
         );
     }

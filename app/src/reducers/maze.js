@@ -13,65 +13,9 @@ const initialState = {
         level: 0,
         row: 0,
         column: 0,
-    }
-}
+    },
 
-/**
- * Return maximum of two values
- * @param  {number} a
- * @param  {number} b
- * @return {number}
- */
-function max(a, b) {
-    if (a > b) {
-        return a;
-    }
-
-    return b;
-}
-
-/**
- * Simulate fight of character and monster
- * @param  {Object} character
- * @param  {Object} monster
- * @return {string} winner    winner of the fight
- */
-function simulateFight(character, monster) {
-    console.log('%cSimulating fight...\n',
-        'color: white; background: black; ',
-        character, '\n', monster
-    );
-
-    let currentTurn = "CHARACTER";
-
-    while (
-        (character.hitPoint > 0) &&
-        (monster.hitPoint > 0)
-    ) {
-        let attacker, defender;
-        if (currentTurn === "CHARACTER") {
-            attacker = character;
-            defender = monster;
-        } else {
-            attacker = monster;
-            defender = character;
-        }
-
-        const damageDone = max(0, attacker.attack - defender.defend);
-        defender.hitPoint -= damageDone;
-
-        if (currentTurn === "CHARACTER") {
-            currentTurn = "MONSTER";
-        } else {
-            currentTurn = "CHARACTER";
-        }
-    }
-
-    if (character.hitPoint > 0) {
-        return "CHARACTER";
-    } else {
-        return "MONSTER";
-    }
+    battle: null
 }
 
 /**
@@ -218,7 +162,6 @@ function updateCharacterPositionByStair(newState, level, stairID) {
  */
 function checkAndUpdateMazeState(newState, newPosition) {
     const {
-        character,
         tilesDetails: maze,
         monstersDetails,
     } = newState;
@@ -236,11 +179,26 @@ function checkAndUpdateMazeState(newState, newPosition) {
 
     if (monsterID !== null) {
         const monster = monstersDetails[level][monsterID];
+        const {
+            attack,
+            defend,
+            hitPoint,
+        } = monster;
+
+        newState.battle = {
+            attack,
+            defend,
+            hitPoint,
+            monsterID,
+            turn: "CHARACTER",
+        };
+        /*
         const newCharacter = _.cloneDeep(character);
         const newMonster = _.cloneDeep(monster);
         simulateFight(newCharacter, newMonster);
         newState.character = newCharacter;
         removeMonster(newState, level, monsterID);
+        */
     }
 
     if (doorID !== null) {
@@ -271,6 +229,10 @@ const maze = (state = initialState, action) => {
             };
         }
         case 'MOVE_CHARACTER': {
+            if (state.battle) {
+                return state;
+            }
+
             const { differenceRow, differenceColumn } = action.payload;
             const { character } = state;
             let { level, row, column } = character;
@@ -284,6 +246,49 @@ const maze = (state = initialState, action) => {
                 newState.character.column = column;
                 checkAndUpdateMazeState(newState, { level, row, column });
             }
+
+            return newState;
+        }
+        case 'END_BATTLE': {
+            let newState = _.cloneDeep(state);
+
+            const level = newState.character.level;
+            const monsterID = newState.battle.monsterID;
+
+            removeMonster(newState, level, monsterID);
+            newState.battle = null;
+
+            return newState;
+        }
+        case 'CHARACTER_ATTACKS': {
+            let newState = _.cloneDeep(state);
+
+            const {
+                character,
+                battle: monster
+            } = newState;
+
+            const damage = character.attack - monster.defend;
+            const monsterHitPoint = Math.max(0, monster.hitPoint - damage);
+
+            newState.battle.hitPoint = monsterHitPoint;
+            newState.battle.turn = 'MONSTER';
+
+            return newState;
+        }
+        case 'MONSTER_ATTACKS': {
+            let newState = _.cloneDeep(state);
+
+            const {
+                character,
+                battle: monster,
+            } = newState;
+
+            const damage = monster.attack - character.defend;
+            const characterHitPoint = character.hitPoint - damage;
+
+            newState.character.hitPoint = characterHitPoint;
+            newState.battle.turn = 'CHARACTER';
 
             return newState;
         }
