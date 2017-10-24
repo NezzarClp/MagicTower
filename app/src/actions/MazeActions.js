@@ -46,5 +46,15 @@ export default {
                 differenceColumn,
             },
         };
+    },
+
+    /**
+     * Action creator to remove the door that the character is on
+     * @return {Object} action object
+     */
+    removeCurrentDoor() {
+        return {
+            type: 'REMOVE_CURRENT_DOOR',
+        };
     }
 }

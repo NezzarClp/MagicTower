@@ -1,13 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+
 import GridCell from './GridCell.react';
 
-import door2 from '../../images/doors/yellow_door.png';
+import MazeActions from '../../actions/MazeActions.js';
 
-const door = require('../../images/openDoors/yellow_door.gif');
+import door from '../../images/doors/yellow_door.png';
 
-export default class DoorCell extends React.PureComponent {
+const doorOpening = require('../../images/openDoors/yellow_door.gif');
+
+const OPEN_DOOR_TIMEOUT = 500;
+
+function mapDispatchToProps(dispatch) {
+    return {
+        removeCurrentDoor: () => {
+            dispatch(MazeActions.removeCurrentDoor());
+        }
+    }
+}
+
+export class DoorCell extends React.PureComponent {
     static propTypes = {
         /**
          * The 0-based x-coordinate of the cell, from left to right
@@ -18,35 +32,37 @@ export default class DoorCell extends React.PureComponent {
          * The 0-based y-coordinate of the cell, from top to bottom
          */
         row: PropTypes.number.isRequired,
-        
+
         /**
-         * If the door is being destroyed or not
+         * If the door is being opened
          */
-        destroyed: PropTypes.bool,
+        isOpening: PropTypes.bool.isRequired,
+
+        /**
+         * Fired when the door has to be removed
+         */
+        removeCurrentDoor: PropTypes.func,
     };
-    
-    static defaultProps = {
-        destroyed: false,
-    };
-    
-    _getDoorSrc(destroyed) {
-        if (destroyed) {
-            return door;
-        }
-        
-        return door2;
-    }
+
 
     render() {
         const {
-            row, 
+            row,
             column,
+            isOpening,
+            removeCurrentDoor
         } = this.props;
-        const src = this._getDoorSrc(this.props.destroyed);
+
+        const src = isOpening ? doorOpening : door;
         const classNames = ['grid__cell__door'];
 
+        if (isOpening) {
+            console.log('set timeout');
+            setTimeout(removeCurrentDoor, OPEN_DOOR_TIMEOUT);
+        }
+
         return (
-            <GridCell 
+            <GridCell
                 row={row}
                 column={column}
                 src={src}
@@ -55,3 +71,5 @@ export default class DoorCell extends React.PureComponent {
         );
     }
 }
+
+export default connect(null, mapDispatchToProps)(DoorCell);

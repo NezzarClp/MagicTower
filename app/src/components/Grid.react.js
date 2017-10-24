@@ -10,7 +10,6 @@ import DoorCell from './cells/DoorCell.react';
 import MonsterCell from './cells/MonsterCell.react';
 import StairCell from './cells/StairCell.react';
 import TileCell from './cells/TileCell.react';
-import BattleDialog from './BattleDialog.react';
 
 function mapStateToProps(state) {
     const currentLevel = state.maze.character.level;
@@ -22,6 +21,7 @@ function mapStateToProps(state) {
         doorsDetails: state.maze.doorsDetails[currentLevel],
         monstersDetails: state.maze.monstersDetails[currentLevel],
         stairsDetails: state.maze.stairsDetails[currentLevel],
+        openingDoorID: state.maze.openingDoorID,
     };
 }
 
@@ -96,17 +96,18 @@ export class Grid extends React.Component {
     }
 
     _getDoorCells() {
-        const { doorsDetails } = this.props;
+        const { doorsDetails, openingDoorID } = this.props;
         const doorCells = [];
 
         for (let doorID in doorsDetails) {
-            const { row, column, destroyed } = doorsDetails[doorID];
+            const { row, column } = doorsDetails[doorID];
+            const isOpening = (parseInt(doorID) === openingDoorID);
             const doorCell = (
                 <DoorCell
                     key={`doorCell${row}_${column}`}
                     row={row}
                     column={column}
-                    destroyed={destroyed}
+                    isOpening={isOpening}
                 />
             );
 
@@ -183,7 +184,6 @@ export class Grid extends React.Component {
                 {stairCells}
                 {tileCells}
                 {monsterCells}
-                <BattleDialog />
             </div>
         );
     }

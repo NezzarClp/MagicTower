@@ -92,6 +92,16 @@
             "row": 9,
             "column": 10,
             "type": 1
+        },
+        {
+            "row": 10,
+            "column": 6,
+            "type": 1
+        },
+        {
+            "row": 8,
+            "column": 6,
+            "type": 1
         }
     ],
     "stairs": [

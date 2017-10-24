@@ -25,7 +25,6 @@ export default {
             const monstersDetails = {};
             const stairsDetails = {};
             const tilesDetails = [];
-            const destroyedDoors = [];
 
             let totalDoors = 0;
             let totalMonsters = 0;
@@ -121,7 +120,6 @@ export default {
                 monstersDetails,
                 stairsDetails,
                 tilesDetails,
-                destroyedDoors,
             })
         });
     },
@@ -140,7 +138,6 @@ export default {
                 monstersDetails: [],
                 stairsDetails: [],
                 tilesDetails: [],
-                destroyedDoors: [],
             }
 
             for (let i = 0; i < numLevels; i++) {

@@ -8,6 +8,7 @@ import MazeActions from './actions/MazeActions';
 import CharacterAPI from './apis/CharacterAPI';
 import MazeAPI from './apis/MazeAPI';
 
+import BattleDialog from './components/BattleDialog.react';
 import Grid from './components/Grid.react';
 import MessageBox from './components/MessageBox.react';
 import Panel from './components/Panel.react';
@@ -70,6 +71,7 @@ export class App extends React.Component {
                         <Panel />
                     </div>
                     <MessageBox />
+                    <BattleDialog />
                 </div>
                 <div>
                     <KeyboardInput

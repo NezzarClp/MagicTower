@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 import BattleActions from '../actions/BattleActions.js';
 
+const BATTLE_STEP_TIMEOUT = 500;
+
 function mapStateToProps(state) {
     return {
         character: state.maze.character,
@@ -44,6 +46,16 @@ export class BattleDialog extends React.Component {
         turn: PropTypes.string,
 
         /**
+         * Fired when the character attacks,
+         */
+        characterAttacks: PropTypes.func,
+
+        /**
+         * Fired when the monster attacks,
+         */
+        monsterAttacks: PropTypes.func,
+
+        /**
          * Fired when the battle ends,
          */
         endBattle: PropTypes.func,
@@ -70,12 +82,12 @@ export class BattleDialog extends React.Component {
             );
 
             if (hitPoint <= 0) {
-                setTimeout(endBattle, 500);
+                setTimeout(endBattle, BATTLE_STEP_TIMEOUT);
             } else {
                 if (turn === 'CHARACTER') {
-                    setTimeout(characterAttacks, 500);
+                    setTimeout(characterAttacks, BATTLE_STEP_TIMEOUT);
                 } else {
-                    setTimeout(monsterAttacks, 500);
+                    setTimeout(monsterAttacks, BATTLE_STEP_TIMEOUT);
                 }
             }
         }

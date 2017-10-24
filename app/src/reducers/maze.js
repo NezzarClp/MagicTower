@@ -7,7 +7,6 @@ const initialState = {
     monstersDetails: [],
     stairsDetails: [],
     tilesDetails: [],
-    destroyedDoors: [],
 
     character: {
         level: 0,
@@ -15,7 +14,8 @@ const initialState = {
         column: 0,
     },
 
-    battle: null
+    battle: null,
+    openingDoorID: null
 }
 
 /**
@@ -132,9 +132,8 @@ function removeMonster(newState, level, monsterID) {
 function removeDoor(newState, level, doorID) {
     const { row, column } = newState.doorsDetails[level][doorID];
 
-    newState.destroyedDoors[level].push(doorID);
     newState.tilesDetails[level][row][column].doorID = null;
-    newState.doorsDetails[level][doorID].destroyed = true;
+    delete newState.doorsDetails[level][doorID];
 }
 
 /**
@@ -192,23 +191,29 @@ function checkAndUpdateMazeState(newState, newPosition) {
             monsterID,
             turn: "CHARACTER",
         };
-        /*
-        const newCharacter = _.cloneDeep(character);
-        const newMonster = _.cloneDeep(monster);
-        simulateFight(newCharacter, newMonster);
-        newState.character = newCharacter;
-        removeMonster(newState, level, monsterID);
-        */
     }
 
     if (doorID !== null) {
-        removeDoor(newState, level, doorID);
+        newState.openingDoorID = doorID;
         newState.character.yellowKey = newState.character.yellowKey - 1;
     }
 
     if (stairID !== null) {
         updateCharacterPositionByStair(newState, level, stairID);
     }
+}
+
+/**
+ * Whether we should disable keyboard input
+ * @param {Object} state
+ * @return {boolean}
+ */
+function isFrozen(state) {
+    if (state.battle != null || state.openingDoorID != null) {
+        return true;
+    }
+
+    return false;
 }
 
 const maze = (state = initialState, action) => {
@@ -229,7 +234,7 @@ const maze = (state = initialState, action) => {
             };
         }
         case 'MOVE_CHARACTER': {
-            if (state.battle) {
+            if (isFrozen(state)){
                 return state;
             }
 
@@ -289,6 +294,17 @@ const maze = (state = initialState, action) => {
 
             newState.character.hitPoint = characterHitPoint;
             newState.battle.turn = 'CHARACTER';
+
+            return newState;
+        }
+        case 'REMOVE_CURRENT_DOOR': {
+            let newState = _.cloneDeep(state);
+
+            const level = newState.character.level;
+            const doorID = newState.openingDoorID;
+
+            removeDoor(newState, level, doorID);
+            newState.openingDoorID = null;
 
             return newState;
         }
