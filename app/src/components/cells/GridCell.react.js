@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Promise from 'bluebird';
 
 import UIConstants from '../../constants/UIConstants';
 
@@ -26,10 +27,16 @@ export default class GridCell extends React.PureComponent {
          * Additional classnames
          */
         classNames: PropTypes.array,
+        
+        /**
+         * True if the image is gif
+         */
+        gif: PropTypes.bool,
     };
     
     static defaultProps = {
         classNames: [],
+        gif: false,
     };
 
     _getPositionStyle() {
@@ -46,10 +53,19 @@ export default class GridCell extends React.PureComponent {
         const { src } = this.props;
         const positionStyle = this._getPositionStyle();
         const className = classNames('grid__cell', this.props.classNames);
+        let img;
+        
+        img = (
+            <img 
+                className='grid__cell__img' 
+                alt='' 
+                src={src}
+            />
+        );
 
         return (
             <div className={className} style={positionStyle}>
-                <img className='grid__cell__img' alt='' src={src} />
+                {img}
             </div>
         );
     }

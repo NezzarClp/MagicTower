@@ -76,19 +76,19 @@ export class App extends React.Component {
                         keyMaps={{
                             37: {
                                 func: MazeActions.moveCharacter,
-                                param: [0, -1],
+                                param: [0, -1, "left"],
                             },
                             38: {
                                 func: MazeActions.moveCharacter,
-                                param: [-1, 0],
+                                param: [-1, 0, "up"],
                             },
                             39: {
                                 func: MazeActions.moveCharacter,
-                                param: [0, 1],
+                                param: [0, 1, "right"],
                             },
                             40: {
                                 func: MazeActions.moveCharacter,
-                                param: [1, 0],
+                                param: [1, 0, "down"],
                             },
                         }}
                     />

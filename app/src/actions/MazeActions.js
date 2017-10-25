@@ -36,14 +36,16 @@ export default {
      * Action creator to move the character by specific differenceRow
      * @param  {number} differenceRow
      * @param  {number} differenceColumn
+     * @param  {string} direction        one of up, left, right or down
      * @return {Object} action object
      */
-    moveCharacter(differenceRow, differenceColumn) {
+    moveCharacter(differenceRow, differenceColumn, direction) {
         return {
             type: 'MOVE_CHARACTER',
             payload: {
                 differenceRow,
                 differenceColumn,
+                direction,
             },
         };
     }

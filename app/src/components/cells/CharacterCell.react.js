@@ -33,8 +33,6 @@ export default class CharacterCell extends React.Component {
     _getCharacterSrc() {
         const { direction } = this.props;
         
-        console.log(direction);
-        
         if (direction === 'normal') {
             return character;
         }
@@ -51,11 +49,12 @@ export default class CharacterCell extends React.Component {
         const classNames = ['grid__cell__character'];
         
         return (
-            <GridCell 
+            <GridCell
                 row={row}
                 column={column}
                 src={src}
                 classNames={classNames}
+                gif={this.props.direction !== 'normal'}
             />
         );
     }

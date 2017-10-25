@@ -1,13 +1,16 @@
 $cellWidth: 40px;
 
 .grid {
-    position: 'relative';
-    display: 'flex';
+    position: relative;
+    display: flex;
 }
 
 .grid__cell {
     position: absolute;
-    &__img {
+    width: $cellWidth;
+    height: $cellWidth;
+    
+    &__img, .jsgif canvas {
         top: 0;
         left: 0;
         width: $cellWidth;

@@ -18,9 +18,11 @@ outputPath = sys.argv[4];
 
 for image_path in glob.glob("./data/*.png"):
     image = misc.imread(image_path)
+    print image.shape
     
     for i in range(0, 4):
         image2 = image[numRow*33:(numRow+1)*33,numColumn*32:(numColumn+1)*32,:]
+        print image2.shape
         strr =  "./temp" + str(i) + ".png"
         misc.imsave(strr, image2)
         
@@ -36,9 +38,14 @@ for image_path in glob.glob("./data/*.png"):
     for i in range(0, 4):
         strr =  "./temp" + str(i) + ".png"
         image = Image.open(strr)
-        os.remove(strr);
+      #  os.remove(strr);
         images.append(Image.alpha_composite(mask, image))
     
     img = images[0]
     images.append(img)
-    img.save(outputPath, duration=100, save_all=True, append_images=images[1:], transparency=0, disposal=2)
+    images[1].save('hi2.png');
+    img.save('./temp.gif', duration=125, save_all=True, loop=0, append_images=images[:], transparency=0, disposal=2)
+    
+    gifImage = Image.open('./temp.gif');
+  #  gifImage.tile = 7;
+    gifImage.save(outputPath, save_all=True);

@@ -2,7 +2,7 @@
     "level": 0,
     "row": 11,
     "column": 6,
-    "direction": "up",
+    "direction": "normal",
     "attack": 30,
     "defend": 10,
     "hitPoint": 300,

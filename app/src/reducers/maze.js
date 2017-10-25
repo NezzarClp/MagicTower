@@ -269,7 +269,7 @@ const maze = (state = initialState, action) => {
             };
         }
         case 'MOVE_CHARACTER': {
-            const { differenceRow, differenceColumn } = action.payload;
+            const { differenceRow, differenceColumn, direction } = action.payload;
             const { character } = state;
             let { level, row, column } = character;
 
@@ -282,6 +282,8 @@ const maze = (state = initialState, action) => {
                 newState.character.column = column;
                 checkAndUpdateMazeState(newState, { level, row, column });
             }
+            
+            newState.character.direction = direction;
 
             return newState;
         }
