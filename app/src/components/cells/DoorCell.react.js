@@ -57,7 +57,6 @@ export class DoorCell extends React.PureComponent {
         const classNames = ['grid__cell__door'];
 
         if (isOpening) {
-            console.log('set timeout');
             setTimeout(removeCurrentDoor, OPEN_DOOR_TIMEOUT);
         }
 

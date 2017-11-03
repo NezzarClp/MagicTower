@@ -1,3 +1,19 @@
 export default {
-    emptyFunction: () => {}
+    emptyFunction: () => {},
+
+    ActionTypes: {
+        INITIALIZE_CHARACTER: 'INITIALIZE_CHARACTER',
+        INITIALIZE_MAP: 'INITIALIZE_MAP',
+        MOVE_CHARACTER: 'MOVE_CHARACTER',
+        REMOVE_CURRENT_DOOR: 'REMOVE_CURRENT_DOOR',
+
+        END_BATTLE: 'END_BATTLE',
+        CHARACTER_ATTACKS: 'CHARACTER_ATTACKS',
+        MONSTER_ATTACKS: 'MONSTER_ATTACKS',
+    },
+
+    BattlePhases: {
+        CHARACTER_PHASE: 'CHARACTER_PHASE',
+        MONSTER_PHASE: 'MONSTER_PHASE',
+    }
 };

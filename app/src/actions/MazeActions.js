@@ -1,3 +1,7 @@
+import AppConstants from '../constants/AppConstants';
+
+const { ActionTypes } = AppConstants;
+
 export default {
     /**
      * Action creator to initialize maze reducer by character data object
@@ -6,11 +10,11 @@ export default {
      */
     initializeCharacter(character) {
         return {
-            type: 'INITIALIZE_CHARACTER',
+            type: ActionTypes.INITIALIZE_CHARACTER,
             payload: {
-                character
+                character,
             },
-        }
+        };
     },
 
     /**
@@ -25,11 +29,11 @@ export default {
      */
     initializeMap(mapDetails) {
         return {
-            type: 'INITIALIZE_MAP',
+            type: ActionTypes.INITIALIZE_MAP,
             payload: {
                 mapDetails,
             },
-        }
+        };
     },
 
     /**
@@ -40,7 +44,7 @@ export default {
      */
     moveCharacter(differenceRow, differenceColumn) {
         return {
-            type: 'MOVE_CHARACTER',
+            type: ActionTypes.MOVE_CHARACTER,
             payload: {
                 differenceRow,
                 differenceColumn,
@@ -54,7 +58,7 @@ export default {
      */
     removeCurrentDoor() {
         return {
-            type: 'REMOVE_CURRENT_DOOR',
+            type: ActionTypes.REMOVE_CURRENT_DOOR,
         };
     }
 }

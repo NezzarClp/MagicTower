@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 
 import BattleActions from '../actions/BattleActions.js';
 
+import AppConstants from '../constants/AppConstants';
+
+const { BattlePhases } = AppConstants;
+
 const BATTLE_STEP_TIMEOUT = 500;
 
 function mapStateToProps(state) {
@@ -84,7 +88,7 @@ export class BattleDialog extends React.Component {
             if (hitPoint <= 0) {
                 setTimeout(endBattle, BATTLE_STEP_TIMEOUT);
             } else {
-                if (turn === 'CHARACTER') {
+                if (turn === BattlePhases.CHARACTER_PHASE) {
                     setTimeout(characterAttacks, BATTLE_STEP_TIMEOUT);
                 } else {
                     setTimeout(monsterAttacks, BATTLE_STEP_TIMEOUT);

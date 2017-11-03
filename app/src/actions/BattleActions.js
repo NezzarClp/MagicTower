@@ -1,3 +1,7 @@
+import AppConstants from '../constants/AppConstants';
+
+const { ActionTypes } = AppConstants;
+
 export default {
     /**
      * Ends a battle
@@ -5,8 +9,8 @@ export default {
      */
     endBattle() {
         return {
-            type: 'END_BATTLE'
-        }
+            type: ActionTypes.END_BATTLE,
+        };
     },
 
     /**
@@ -15,8 +19,8 @@ export default {
      */
     characterAttacks() {
         return {
-            type: 'CHARACTER_ATTACKS'
-        }
+            type: ActionTypes.CHARACTER_ATTACKS,
+        };
     },
 
     /**
@@ -25,7 +29,7 @@ export default {
      */
     monsterAttacks() {
         return {
-            type: 'MONSTER_ATTACKS'
-        }
+            type: ActionTypes.MONSTER_ATTACKS,
+        };
     }
 }

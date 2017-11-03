@@ -1,5 +1,9 @@
 import _ from 'lodash';
 
+import AppConstants from '../constants/AppConstants';
+
+const { ActionTypes, BattlePhases } = AppConstants;
+
 const initialState = {
     gridHeight: 0,
     gridWidth: 0,
@@ -29,20 +33,20 @@ function fastForwardSimulateFight(character, monster) {
     const monsterDamagePerRound = monster.attack - character.defend;
 
     if (characterDamagePerRound <= 0) {
-        return "MONSTER";
+        return BattlePhases.MONSTER_PHASE;
     }
 
     if (monsterDamagePerRound <= 0) {
-        return "CHARACTER";
+        return BattlePhases.CHARACTER_PHASE;
     }
 
     const numCharacterTurnToKillMonster = Math.ceil(monster.hitPoint / characterDamagePerRound);
     const numMonsterTurnToKillCharacter = Math.ceil(character.hitPoint / monsterDamagePerRound);
 
     if (numCharacterTurnToKillMonster <= numMonsterTurnToKillCharacter) {
-        return "CHARACTER";
+        return BattlePhases.CHARACTER_PHASE;
     } else {
-        return "MONSTER";
+        return BattlePhases.MONSTER_PHASE;
     }
 }
 
@@ -75,7 +79,7 @@ function canCharacterEnterCell(newState, level, cell) {
     } = cell;
 
     const isSafeToEnter = ((monsterID === null) ? true :
-        (fastForwardSimulateFight(character, monstersDetails[level][monsterID]) === "CHARACTER"));
+        (fastForwardSimulateFight(character, monstersDetails[level][monsterID]) === BattlePhases.CHARACTER_PHASE));
 
     const canOpenDoor = ((doorID === null) ? true :
         (checkHasKeyToOpenDoor(character, doorsDetails[level][doorID])));
@@ -189,7 +193,7 @@ function checkAndUpdateMazeState(newState, newPosition) {
             defend,
             hitPoint,
             monsterID,
-            turn: "CHARACTER",
+            turn: BattlePhases.CHARACTER_PHASE,
         };
     }
 
@@ -216,16 +220,122 @@ function isFrozen(state) {
     return false;
 }
 
+/**
+ * Compute the new state when the character moves
+ * @param  {Object} state            old state
+ * @param  {number} differenceRow    newRow - oldRow
+ * @param  {number} differenceColumn newColumn - oldColumn
+ * @return {Object} new state
+ */
+function moveCharacter(state, differenceRow, differenceColumn) {
+    if (isFrozen(state)) {
+        return state;
+    }
+
+    const { character } = state;
+    let { level, row, column } = character;
+
+    let newState = _.cloneDeep(state);
+    row += differenceRow;
+    column += differenceColumn;
+
+    if (checkValidPosition(newState, { level, row, column })) {
+        newState.character.row = row;
+        newState.character.column = column;
+        checkAndUpdateMazeState(newState, { level, row, column });
+    }
+
+    return newState;
+}
+
+/**
+ * Compute the new state when the battle ends
+ * @param  {Object} state old state
+ * @return {Object} new state
+ */
+function endBattle(state) {
+    let newState = _.cloneDeep(state);
+
+    const level = newState.character.level;
+    const monsterID = newState.battle.monsterID;
+
+    removeMonster(newState, level, monsterID);
+    newState.battle = null;
+
+    return newState;
+}
+
+/**
+ * Compute the new state when the character attacks
+ * @param  {Object} state old state
+ * @return {Object} new state
+ */
+function characterAttacks(state) {
+    let newState = _.cloneDeep(state);
+
+    const {
+        character,
+        battle: monster
+    } = newState;
+
+    const damage = character.attack - monster.defend;
+    const monsterHitPoint = Math.max(0, monster.hitPoint - damage);
+
+    newState.battle.hitPoint = monsterHitPoint;
+    newState.battle.turn = BattlePhases.MONSTER_PHASE;
+
+    return newState;
+}
+
+/**
+ * Compute the new state when the monster attacks
+ * @param  {Object} state old state
+ * @return {Object} new state
+ */
+function monsterAttacks(state) {
+    let newState = _.cloneDeep(state);
+
+    const {
+        character,
+        battle: monster,
+    } = newState;
+
+    const damage = monster.attack - character.defend;
+    const characterHitPoint = character.hitPoint - damage;
+
+    newState.character.hitPoint = characterHitPoint;
+    newState.battle.turn = BattlePhases.CHARACTER_PHASE;
+
+    return newState;
+}
+
+/**
+ * Compute the new state when the current door is removed
+ * @param  {Object} state old state
+ * @return {Object} new state
+ */
+function removeCurrentDoor(state) {
+    let newState = _.cloneDeep(state);
+
+    const level = newState.character.level;
+    const doorID = newState.openingDoorID;
+
+    removeDoor(newState, level, doorID);
+    newState.openingDoorID = null;
+
+    return newState;
+}
+
 const maze = (state = initialState, action) => {
     switch (action.type) {
-        case 'INITIALIZE_CHARACTER': {
+        case ActionTypes.INITIALIZE_CHARACTER: {
             const { character } = action.payload;
             return {
                 ...state,
                 character,
             };
         }
-        case 'INITIALIZE_MAP': {
+        case ActionTypes.INITIALIZE_MAP: {
             const { mapDetails } = action.payload;
 
             return {
@@ -233,80 +343,22 @@ const maze = (state = initialState, action) => {
                 ...mapDetails,
             };
         }
-        case 'MOVE_CHARACTER': {
-            if (isFrozen(state)){
-                return state;
-            }
-
+        case ActionTypes.MOVE_CHARACTER: {
             const { differenceRow, differenceColumn } = action.payload;
-            const { character } = state;
-            let { level, row, column } = character;
 
-            let newState = _.cloneDeep(state);
-            row += differenceRow;
-            column += differenceColumn;
-
-            if (checkValidPosition(newState, { level, row, column })) {
-                newState.character.row = row;
-                newState.character.column = column;
-                checkAndUpdateMazeState(newState, { level, row, column });
-            }
-
-            return newState;
+            return moveCharacter(state, differenceRow, differenceColumn);
         }
-        case 'END_BATTLE': {
-            let newState = _.cloneDeep(state);
-
-            const level = newState.character.level;
-            const monsterID = newState.battle.monsterID;
-
-            removeMonster(newState, level, monsterID);
-            newState.battle = null;
-
-            return newState;
+        case ActionTypes.END_BATTLE: {
+            return endBattle(state);
         }
-        case 'CHARACTER_ATTACKS': {
-            let newState = _.cloneDeep(state);
-
-            const {
-                character,
-                battle: monster
-            } = newState;
-
-            const damage = character.attack - monster.defend;
-            const monsterHitPoint = Math.max(0, monster.hitPoint - damage);
-
-            newState.battle.hitPoint = monsterHitPoint;
-            newState.battle.turn = 'MONSTER';
-
-            return newState;
+        case ActionTypes.CHARACTER_ATTACKS: {
+            return characterAttacks(state);
         }
-        case 'MONSTER_ATTACKS': {
-            let newState = _.cloneDeep(state);
-
-            const {
-                character,
-                battle: monster,
-            } = newState;
-
-            const damage = monster.attack - character.defend;
-            const characterHitPoint = character.hitPoint - damage;
-
-            newState.character.hitPoint = characterHitPoint;
-            newState.battle.turn = 'CHARACTER';
-
-            return newState;
+        case ActionTypes.MONSTER_ATTACKS: {
+            return monsterAttacks(state);
         }
-        case 'REMOVE_CURRENT_DOOR': {
-            let newState = _.cloneDeep(state);
-
-            const level = newState.character.level;
-            const doorID = newState.openingDoorID;
-
-            removeDoor(newState, level, doorID);
-            newState.openingDoorID = null;
-
-            return newState;
+        case ActionTypes.REMOVE_CURRENT_DOOR: {
+            return removeCurrentDoor(state);
         }
 
         default:
