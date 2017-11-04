@@ -10,6 +10,7 @@ const initialState = {
     doorsDetails: [],
     monstersDetails: [],
     stairsDetails: [],
+    itemsDetails: [],
     tilesDetails: [],
 
     character: {

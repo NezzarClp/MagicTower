@@ -9,6 +9,7 @@ import CharacterCell from './cells/CharacterCell.react';
 import DoorCell from './cells/DoorCell.react';
 import MonsterCell from './cells/MonsterCell.react';
 import StairCell from './cells/StairCell.react';
+import ItemCell from './cells/ItemCell.react';
 import TileCell from './cells/TileCell.react';
 
 function mapStateToProps(state) {
@@ -21,6 +22,7 @@ function mapStateToProps(state) {
         doorsDetails: state.maze.doorsDetails[currentLevel],
         monstersDetails: state.maze.monstersDetails[currentLevel],
         stairsDetails: state.maze.stairsDetails[currentLevel],
+        itemsDetails: state.maze.itemsDetails[currentLevel],
         openingDoorID: state.maze.openingDoorID,
     };
 }
@@ -101,7 +103,7 @@ export class Grid extends React.Component {
 
         for (let doorID in doorsDetails) {
             const { row, column } = doorsDetails[doorID];
-            const isOpening = (parseInt(doorID) === openingDoorID);
+            const isOpening = (parseInt(doorID, 10) === openingDoorID);
             const doorCell = (
                 <DoorCell
                     key={`doorCell${row}_${column}`}
@@ -159,6 +161,27 @@ export class Grid extends React.Component {
         return stairCells;
     }
 
+    _getItemCells() {
+        const { itemsDetails } = this.props;
+        const itemCells = [];
+
+        for (let itemID in itemsDetails) {
+            const { row, column, imgSrc } = itemsDetails[itemID];
+            const itemCell = (
+                <ItemCell
+                    key={`itemCell${row}_${column}`}
+                    row={row}
+                    column={column}
+                    src={imgSrc}
+                />
+            );
+
+            itemCells.push(itemCell);
+        }
+
+        return itemCells;
+    }
+
     _getGridStyle() {
         const { numRows, numColumns } = this.props;
         const { cellWidth } = UIConstants;
@@ -174,6 +197,7 @@ export class Grid extends React.Component {
         const doorCells = this._getDoorCells();
         const monsterCells = this._getMonsterCells();
         const stairCells = this._getStairCells();
+        const itemCells = this._getItemCells();
         const tileCells = this._getTileCells();
         const gridStyle = this._getGridStyle();
 
@@ -183,6 +207,7 @@ export class Grid extends React.Component {
                 {doorCells}
                 {stairCells}
                 {tileCells}
+                {itemCells}
                 {monsterCells}
             </div>
         );

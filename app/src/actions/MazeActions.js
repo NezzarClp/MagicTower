@@ -24,6 +24,7 @@ export default {
      * @property {number} gridWidth       number of columns of the grid
      * @property {Object} doorsDetails    list of doors details paired with ID
      * @property {Object} monstersDetails list of monster details paired with ID
+     * @property {Object} itemsDetails    list of items details paired with ID
      * @property {Array}  tilesDetails    list of tiles details
      * @return   {Object} action Object
      */

@@ -42,5 +42,16 @@
             "name": "up_stair",
             "imgSrc": "up_stair"
         }
+    },
+
+    "mapItemTypeToDetails": {
+        "1": {
+            "name": "red_diamond",
+            "imgSrc": "red_diamond"
+        },
+        "2": {
+            "name": "blue_diamond",
+            "imgSrc": "blue_diamond"
+        }
     }
 }

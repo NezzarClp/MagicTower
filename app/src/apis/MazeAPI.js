@@ -11,6 +11,7 @@ const {
     mapMonsterTypeToDetails,
     mapDoorTypeToDetails,
     mapStairTypeToDetails,
+    mapItemTypeToDetails,
 } = mazeConfig;
 
 export default {
@@ -24,11 +25,13 @@ export default {
             const doorsDetails = {};
             const monstersDetails = {};
             const stairsDetails = {};
+            const itemsDetails = {};
             const tilesDetails = [];
 
             let totalDoors = 0;
             let totalMonsters = 0;
             let totalStairs = 0;
+            let totalItems = 0;
 
             const levelData = require(`../data/level_${currentLevel}.json`);
 
@@ -37,6 +40,7 @@ export default {
                 monsters,
                 doors,
                 stairs,
+                items,
             } = levelData;
 
             const numRows = mazeTiles.length;
@@ -57,6 +61,7 @@ export default {
                         doorID: null,
                         monsterID: null,
                         stairID: null,
+                        itemID: null,
                         type: mapTilesIDToString[mazeTileType],
                     });
                 }
@@ -113,6 +118,22 @@ export default {
                 totalStairs = totalStairs + 1;
             }
 
+            const numItems = items.length;
+
+            for (let i = 0; i < numItems; i++) {
+                const item = items[i];
+                const { row, column, type } = item;
+
+                itemsDetails[totalItems] = {
+                    ...item,
+                    ...mapItemTypeToDetails[type],
+                };
+
+                tilesDetails[row][column].itemID = totalItems;
+
+                totalItems = totalItems + 1;
+            }
+
             resolve({
                 gridHeight,
                 gridWidth,
@@ -120,6 +141,7 @@ export default {
                 monstersDetails,
                 stairsDetails,
                 tilesDetails,
+                itemsDetails,
             })
         });
     },
@@ -138,26 +160,44 @@ export default {
                 monstersDetails: [],
                 stairsDetails: [],
                 tilesDetails: [],
+                itemsDetails: [],
             }
+
+            const promises = [];
 
             for (let i = 0; i < numLevels; i++) {
-                this._readLevel(i).then((data) => {
-                    const {
-                       gridHeight: levelGridHeight,
-                       gridWidth: levelGridWidth,
-                       ...details,
-                    } = data;
+                promises.push(
+                    this._readLevel(i)
+                        .then((data) => {
+                            const {
+                               gridHeight: levelGridHeight,
+                               gridWidth: levelGridWidth,
+                               ...details,
+                            } = data;
 
-                    maze.gridHeight = Math.max(maze.gridHeight, levelGridHeight);
-                    maze.gridWidth = Math.max(maze.gridWidth, levelGridWidth);
+                            maze.gridHeight = Math.max(maze.gridHeight, levelGridHeight);
+                            maze.gridWidth = Math.max(maze.gridWidth, levelGridWidth);
 
-                    Object.keys(details).forEach((key) => {
-                        maze[key].push(details[key]);
-                    });
-                });
+                            Object.keys(details).forEach((key) => {
+                                console.log('key is ', key);
+                                maze[key].push(details[key]);
+                            });
+
+                            return;
+                        })
+                );
             }
 
-            resolve(maze);
+            Promise.all(promises)
+                .then(() => {
+                    resolve(maze);
+                })
+                .catch((err) => {
+                    console.error('Loading map configuration failed!');
+                    console.log(err);
+
+                    throw err;
+                });
         });
     }
 
