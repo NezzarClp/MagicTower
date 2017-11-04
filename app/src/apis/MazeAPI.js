@@ -188,7 +188,7 @@ export default {
                 );
             }
 
-            Promise.all(promises)
+            return Promise.all(promises)
                 .then(() => {
                     resolve(maze);
                 })
