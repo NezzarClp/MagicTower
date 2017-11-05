@@ -2,6 +2,8 @@ import _ from 'lodash';
 
 import AppConstants from '../constants/AppConstants';
 
+import MazeUtils from '../utils/MazeUtils';
+
 const { ActionTypes, BattlePhases } = AppConstants;
 
 const initialState = {
@@ -21,6 +23,18 @@ const initialState = {
 
     battle: null,
     openingDoorID: null
+}
+
+/**
+ * Move the character to the specified position
+ * @param {Object} newState new state
+ * @param {Object} position position to move to
+ */
+function moveCharacter(newState, position) {
+    newState.character = {
+        ...newState.character,
+        ...position,
+    };
 }
 
 /**
@@ -59,60 +73,6 @@ function fastForwardSimulateFight(character, monster) {
  */
 function checkHasKeyToOpenDoor(character, door) {
     return (character.yellowKey >= 1);
-}
-
-/**
- * Check if the character can enter a cell
- * @param  {Object} newState
- * @param  {number} level
- * @param  {Object} cell
- * @return {boolean}
- */
-function canCharacterEnterCell(newState, level, cell) {
-    const {
-        character,
-        doorsDetails,
-        monstersDetails,
-    } = newState;
-    const {
-        doorID,
-        monsterID
-    } = cell;
-
-    const isSafeToEnter = ((monsterID === null) ? true :
-        (fastForwardSimulateFight(character, monstersDetails[level][monsterID]) === BattlePhases.CHARACTER_PHASE));
-
-    const canOpenDoor = ((doorID === null) ? true :
-        (checkHasKeyToOpenDoor(character, doorsDetails[level][doorID])));
-
-    return ((cell.type === "floor") && isSafeToEnter && canOpenDoor);
-}
-
-/**
- * Check if the character can enter a cell defined by x and y
- * @param  {Object}   newState new State of the maze
- * @param  {Object}   newPosition
- * @property {number} row
- * @property {number} column
- * @return {boolean}  True if the character can enter the new Position
- */
-function checkValidPosition(newState, newPosition) {
-    const {
-        gridHeight: height,
-        gridWidth: width,
-        tilesDetails: maze,
-    } = newState;
-    const {
-        level,
-        row,
-        column,
-    } = newPosition;
-    const isPositionInsideMaze = (
-        ((row >= 0) && (row < height)) &&
-        ((column >= 0) && (column < width))
-    );
-
-    return (isPositionInsideMaze && canCharacterEnterCell(newState, level, maze[level][row][column]));
 }
 
 /**
@@ -166,22 +126,24 @@ function updateCharacterPositionByStair(newState, level, stairID) {
  */
 function checkAndUpdateMazeState(newState, newPosition) {
     const {
-        tilesDetails: maze,
+        doorsDetails,
+        tilesDetails,
         monstersDetails,
+        character,
     } = newState;
     const {
         level,
         row,
         column,
     } = newPosition;
-    const cellDetails = maze[level][row][column];
+    const cellDetails = tilesDetails[level][row][column];
     const {
         doorID,
         monsterID,
         stairID,
     } = cellDetails;
 
-    if (monsterID !== null) {
+    if ((monsterID !== null) && (fastForwardSimulateFight(character, monstersDetails[level][monsterID]) === BattlePhases.CHARACTER_PHASE)) {
         const monster = monstersDetails[level][monsterID];
         const {
             attack,
@@ -198,7 +160,7 @@ function checkAndUpdateMazeState(newState, newPosition) {
         };
     }
 
-    if (doorID !== null) {
+    if ((doorID !== null) && (checkHasKeyToOpenDoor(character, doorsDetails[level][doorID]))) {
         newState.openingDoorID = doorID;
         newState.character.yellowKey = newState.character.yellowKey - 1;
     }
@@ -214,7 +176,7 @@ function checkAndUpdateMazeState(newState, newPosition) {
  * @return {boolean}
  */
 function isFrozen(state) {
-    if (state.battle != null || state.openingDoorID != null) {
+    if ((state.battle !== null) || (state.openingDoorID !== null)) {
         return true;
     }
 
@@ -228,23 +190,26 @@ function isFrozen(state) {
  * @param  {number} differenceColumn newColumn - oldColumn
  * @return {Object} new state
  */
-function moveCharacter(state, differenceRow, differenceColumn) {
+function characterWalks(state, differenceRow, differenceColumn) {
     if (isFrozen(state)) {
         return state;
     }
 
-    const { character } = state;
+    const { character, battle, openingDoorID, ...maze } = state;
     let { level, row, column } = character;
 
-    let newState = _.cloneDeep(state);
     row += differenceRow;
     column += differenceColumn;
 
-    if (checkValidPosition(newState, { level, row, column })) {
-        newState.character.row = row;
-        newState.character.column = column;
-        checkAndUpdateMazeState(newState, { level, row, column });
+    const position = { level, row, column };
+
+    let newState = _.cloneDeep(state);
+
+    if (MazeUtils.canEnter(maze, position)) {
+        moveCharacter(newState, position);
     }
+
+    checkAndUpdateMazeState(newState, position);
 
     return newState;
 }
@@ -344,10 +309,10 @@ const maze = (state = initialState, action) => {
                 ...mapDetails,
             };
         }
-        case ActionTypes.MOVE_CHARACTER: {
+        case ActionTypes.CHARACTER_WALKS: {
             const { differenceRow, differenceColumn } = action.payload;
 
-            return moveCharacter(state, differenceRow, differenceColumn);
+            return characterWalks(state, differenceRow, differenceColumn);
         }
         case ActionTypes.END_BATTLE: {
             return endBattle(state);

@@ -8,16 +8,16 @@ import { connect } from 'react-redux';
 function mapDispatchToProps(dispatch) {
     return {
         onMoveLeftClick: () => {
-            dispatch(MazeActions.moveCharacter(-1, 0));
+            dispatch(MazeActions.characterWalks(-1, 0));
         },
         onMoveUpClick: () => {
-            dispatch(MazeActions.moveCharacter(0, -1));
+            dispatch(MazeActions.characterWalks(0, -1));
         },
         onMoveRightClick: () => {
-            dispatch(MazeActions.moveCharacter(1, 0));
+            dispatch(MazeActions.characterWalks(1, 0));
         },
         onMoveDownClick: () => {
-            dispatch(MazeActions.moveCharacter(0, 1));
+            dispatch(MazeActions.characterWalks(0, 1));
         }
     }
 }

@@ -77,19 +77,19 @@ export class App extends React.Component {
                     <KeyboardInput
                         keyMaps={{
                             37: {
-                                func: MazeActions.moveCharacter,
+                                func: MazeActions.characterWalks,
                                 param: [0, -1],
                             },
                             38: {
-                                func: MazeActions.moveCharacter,
+                                func: MazeActions.characterWalks,
                                 param: [-1, 0],
                             },
                             39: {
-                                func: MazeActions.moveCharacter,
+                                func: MazeActions.characterWalks,
                                 param: [0, 1],
                             },
                             40: {
-                                func: MazeActions.moveCharacter,
+                                func: MazeActions.characterWalks,
                                 param: [1, 0],
                             },
                         }}

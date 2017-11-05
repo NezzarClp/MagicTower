@@ -4,8 +4,10 @@ export default {
     ActionTypes: {
         INITIALIZE_CHARACTER: 'INITIALIZE_CHARACTER',
         INITIALIZE_MAP: 'INITIALIZE_MAP',
-        MOVE_CHARACTER: 'MOVE_CHARACTER',
         REMOVE_CURRENT_DOOR: 'REMOVE_CURRENT_DOOR',
+
+        CHARACTER_WALKS: 'CHARACTER_WALKS',
+        MOVE_CHARACTER: 'MOVE_CHARACTER',
 
         END_BATTLE: 'END_BATTLE',
         CHARACTER_ATTACKS: 'CHARACTER_ATTACKS',
@@ -15,5 +17,10 @@ export default {
     BattlePhases: {
         CHARACTER_PHASE: 'CHARACTER_PHASE',
         MONSTER_PHASE: 'MONSTER_PHASE',
+    },
+
+    CellTypes: {
+        FLOOR: 'floor',
+        WALL: 'wall',
     }
 };

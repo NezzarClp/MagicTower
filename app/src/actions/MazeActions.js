@@ -38,14 +38,14 @@ export default {
     },
 
     /**
-     * Action creator to move the character by specific differenceRow
+     * Action creator for the character to walk by a specific displacement
      * @param  {number} differenceRow
      * @param  {number} differenceColumn
      * @return {Object} action object
      */
-    moveCharacter(differenceRow, differenceColumn) {
+    characterWalks(differenceRow, differenceColumn) {
         return {
-            type: ActionTypes.MOVE_CHARACTER,
+            type: ActionTypes.CHARACTER_WALKS,
             payload: {
                 differenceRow,
                 differenceColumn,
