@@ -63,6 +63,15 @@ export class BattleDialog extends React.Component {
          * Fired when the battle ends,
          */
         endBattle: PropTypes.func,
+        
+        /**
+         * Style applied to battle dialog
+         */
+        style: PropTypes.object,
+    };
+    
+    static defaultProps = {
+        style: {},
     };
 
     render() {
@@ -72,6 +81,7 @@ export class BattleDialog extends React.Component {
             characterAttacks,
             monsterAttacks,
             endBattle,
+            style,
         } = this.props;
 
         if (battle) {
@@ -94,6 +104,10 @@ export class BattleDialog extends React.Component {
                     setTimeout(monsterAttacks, BATTLE_STEP_TIMEOUT);
                 }
             }
+            
+            return (
+                <div style={style} className="grid__battle-dialog" />
+            )
         }
 
         return null;

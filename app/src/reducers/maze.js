@@ -331,6 +331,7 @@ const maze = (state = initialState, action) => {
     switch (action.type) {
         case ActionTypes.INITIALIZE_CHARACTER: {
             const { character } = action.payload;
+            
             return {
                 ...state,
                 character,

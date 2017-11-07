@@ -12,6 +12,8 @@ import StairCell from './cells/StairCell.react';
 import ItemCell from './cells/ItemCell.react';
 import TileCell from './cells/TileCell.react';
 
+import BattleDialog from './BattleDialog.react';
+
 function mapStateToProps(state) {
     const currentLevel = state.maze.character.level;
 
@@ -191,6 +193,20 @@ export class Grid extends React.Component {
             width: `${numColumns * cellWidth}px`,
         };
     }
+    
+    _getBattleDialogStyle() {
+        const { numRows, numColumns } = this.props;
+        const { 
+            cellWidth,
+            battleDialogHeight, 
+            battleDialogWidth
+        } = UIConstants;
+        
+        return {
+            top: `${numRows * cellWidth * 0.5 - battleDialogHeight * 0.5}px`,
+            left: `${numColumns * cellWidth * 0.5 - battleDialogWidth * 0.5}px`,
+        }
+    }
 
     render() {
         const characterCells = this._getCharacterCells();
@@ -200,6 +216,7 @@ export class Grid extends React.Component {
         const itemCells = this._getItemCells();
         const tileCells = this._getTileCells();
         const gridStyle = this._getGridStyle();
+        const battleDialogStyle = this._getBattleDialogStyle();
 
         return (
             <div className='grid' style={gridStyle}>
@@ -209,6 +226,7 @@ export class Grid extends React.Component {
                 {tileCells}
                 {itemCells}
                 {monsterCells}
+                <BattleDialog style={battleDialogStyle} />
             </div>
         );
     }

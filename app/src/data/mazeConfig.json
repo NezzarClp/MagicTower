@@ -17,8 +17,8 @@
         "2": {
             "name": "red_slime",
             "imgSrc": "red_slime",
-            "attack": 40,
-            "defend": 12,
+            "attack": 10,
+            "defend": 29,
             "hitPoint": 80
         },
         "3": {

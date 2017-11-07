@@ -55,6 +55,11 @@
             "row": 1,
             "column": 5,
             "type": 1
+        },
+        {
+            "row": 11,
+            "column": 5,
+            "type": 2
         }
     ],
     "doors": [

@@ -22,3 +22,14 @@ $cellWidth: 40px;
         z-index: 1;
     }
 }
+
+.grid__battle-dialog {
+    position: absolute;
+    
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    
+    background: green;
+    z-index: 10;
+}

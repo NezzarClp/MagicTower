@@ -179,7 +179,6 @@ export default {
                             maze.gridWidth = Math.max(maze.gridWidth, levelGridWidth);
 
                             Object.keys(details).forEach((key) => {
-                                console.log('key is ', key);
                                 maze[key].push(details[key]);
                             });
 
@@ -194,7 +193,7 @@ export default {
                 })
                 .catch((err) => {
                     console.error('Loading map configuration failed!');
-                    console.log(err);
+                    console.error(err);
 
                     throw err;
                 });
